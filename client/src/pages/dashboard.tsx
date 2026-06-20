@@ -64,7 +64,7 @@ export default function DashboardPage() {
   const recent = searches?.slice(0, 5) ?? [];
 
   return (
-    <div className="p-8 max-w-5xl mx-auto">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto">
 
       {/* Header */}
       <div className="mb-8">
@@ -78,7 +78,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Metric grid */}
-      <div className="grid grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
         <MetricCard label="Searches this month" value="12" delta="+4" spark={[4,6,5,8,7,9,10,12]} />
         <MetricCard label="Hashtags generated" value="284" spark={[40,55,48,70,65,80,90,284]} />
         <MetricCard label="Avg opportunity score" value="76" delta="+3" spark={[68,70,72,71,74,73,75,76]} />
@@ -86,10 +86,10 @@ export default function DashboardPage() {
       </div>
 
       {/* Main 2-col grid */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
 
         {/* Recent searches — spans 2 cols */}
-        <div className="col-span-2 bento-tile">
+        <div className="lg:col-span-2 bento-tile">
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-2">
               <Clock size={14} className="text-[#A1A1AA]" />

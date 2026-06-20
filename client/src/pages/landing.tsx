@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import TrendJetterLogo from '@/components/TrendJetterLogo';
 import { Link, useLocation } from 'wouter';
-import { Hash, Check, Zap, TrendingUp, MapPin, Target, Sparkles, Crown, ChevronDown } from 'lucide-react';
+import { Hash, Check, Zap, TrendingUp, MapPin, Target, Sparkles, Crown, ChevronDown, Menu, X } from 'lucide-react';
 
 // ─── Lenis smooth scroll ──────────────────────────────────────────────────────
 // Initialised once at module level, destroyed on HMR via cleanup
@@ -404,6 +404,7 @@ function SpotlightSection({ children, style: extraStyle }: { children: React.Rea
 // ─── Main ──────────────────────────────────────────────────────────────────────
 export default function LandingPage() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   useLenis();
   useGlobalCursorSpotlight();
 
@@ -413,32 +414,63 @@ export default function LandingPage() {
         {/* ── Nav ── */}
         <nav style={{
           position: 'sticky', top: 0, zIndex: 50,
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          padding: '0 32px', height: 64,
           background: 'rgba(255,255,255,0.92)',
           borderBottom: '1px solid #E4E4E7',
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
         }}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          {/* Main bar */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 24px', height: 60 }}>
             <TrendJetterLogo height={22} color="#111111" />
+            {/* Desktop links */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 28 }} className="hide-mobile">
+              {(['Features','Pricing'] as const).map(label => (
+                <a key={label} href={`#${label.toLowerCase()}`}
+                  onClick={e => { e.preventDefault(); document.getElementById(label.toLowerCase())?.scrollIntoView({ behavior: 'smooth' }); }}
+                  style={{ fontSize: 15, color: '#52525B', textDecoration: 'none', transition: 'color 0.15s' }}
+                  onMouseEnter={e => (e.currentTarget.style.color='#111111')}
+                  onMouseLeave={e => (e.currentTarget.style.color='#52525B')}
+                >{label}</a>
+              ))}
+              <MagneticBtn href="/dashboard" style={{ fontSize: 15, color: '#52525B' }}>Sign in</MagneticBtn>
+              <MagneticBtn href="/generator" className="btn-primary" style={{ fontSize: 14, padding: '8px 18px' }} data-testid="hero-cta-nav">Try free</MagneticBtn>
+            </div>
+            {/* Mobile hamburger */}
+            <button
+              className="show-mobile"
+              onClick={() => setMenuOpen(o => !o)}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 8, color: '#111111' }}
+              aria-label="Toggle menu"
+            >
+              {menuOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
-            {(['Features','Pricing'] as const).map(label => (
-              <a key={label} href={`#${label.toLowerCase()}`}
-                onClick={e => { e.preventDefault(); document.getElementById(label.toLowerCase())?.scrollIntoView({ behavior: 'smooth' }); }}
-                style={{ fontSize: 15, color: '#52525B', textDecoration: 'none', transition: 'color 0.15s' }}
-                onMouseEnter={e => (e.currentTarget.style.color='#111111')}
-                onMouseLeave={e => (e.currentTarget.style.color='#52525B')}
-              >{label}</a>
-            ))}
-            <MagneticBtn href="/dashboard" style={{ fontSize: 15, color: '#52525B' }}>Sign in</MagneticBtn>
-            <MagneticBtn href="/generator" className="btn-primary" style={{ fontSize: 14, padding: '8px 18px' }} data-testid="hero-cta-nav">Try free</MagneticBtn>
-          </div>
+          {/* Mobile dropdown menu */}
+          {menuOpen && (
+            <div style={{
+              borderTop: '1px solid #E4E4E7',
+              background: '#FFFFFF',
+              padding: '16px 24px 20px',
+              display: 'flex', flexDirection: 'column', gap: 4,
+            }}>
+              {(['Features','Pricing'] as const).map(label => (
+                <a key={label} href={`#${label.toLowerCase()}`}
+                  onClick={e => { e.preventDefault(); setMenuOpen(false); document.getElementById(label.toLowerCase())?.scrollIntoView({ behavior: 'smooth' }); }}
+                  style={{ fontSize: 16, color: '#111111', textDecoration: 'none', padding: '10px 0', borderBottom: '1px solid #F4F4F5' }}
+                >{label}</a>
+              ))}
+              <a onClick={() => { setMenuOpen(false); }} style={{ padding: '10px 0', borderBottom: '1px solid #F4F4F5', fontSize: 16, color: '#111111', cursor: 'pointer' }}
+                href="/#/dashboard"
+              >Sign in</a>
+              <a href="/#/generator" onClick={() => setMenuOpen(false)}
+                style={{ marginTop: 12, textAlign: 'center', fontSize: 15, fontWeight: 600, padding: '12px 0', borderRadius: 10, background: '#111111', color: '#FFFFFF', textDecoration: 'none' }}
+              >Try free →</a>
+            </div>
+          )}
         </nav>
 
         {/* ── Hero — pure white + floating ambient cards ── */}
-        <section style={{ backgroundColor: '#FFFFFF', padding: '96px 32px 80px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+        <section style={{ backgroundColor: '#FFFFFF', padding: 'clamp(48px,8vw,96px) clamp(16px,4vw,32px) clamp(40px,6vw,80px)', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
 
           <div style={{ maxWidth: 800, margin: '0 auto', position: 'relative' }}>
             <div className="hero-fade-1" style={{
@@ -479,7 +511,7 @@ export default function LandingPage() {
             {/* Demo cards */}
             <div style={{ maxWidth: 720, margin: '0 auto' }}>
               <p className="label-eyebrow" style={{ marginBottom: 16, textAlign: 'center' }}>Live intelligence — not post counts</p>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
+              <div className="demo-cards-grid">
                 <DemoCard tag="#luxurytravel" score={94} competition="Low"       growth="+47%" relevance="Very High" verdict="Use This Now" delay={0}   />
                 <DemoCard tag="#wellnesslifestyle2026" score={88} competition="Low"       growth="+34%" relevance="High"      verdict="Use This Now" delay={120}  />
                 <DemoCard tag="#travel"        score={29} competition="Very High" growth="+1%"  relevance="Low"       verdict="Skip"         delay={240}  />
@@ -489,8 +521,8 @@ export default function LandingPage() {
         </section>
 
         {/* ── Stats bar ── */}
-        <section style={{ padding: '48px 32px', borderTop: '1px solid #E4E4E7', borderBottom: '1px solid #E4E4E7', background: '#FAFAFA' }}>
-          <div style={{ maxWidth: 720, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 32, textAlign: 'center' }}>
+        <section style={{ padding: 'clamp(32px,5vw,48px) clamp(16px,4vw,32px)', borderTop: '1px solid #E4E4E7', borderBottom: '1px solid #E4E4E7', background: '#FAFAFA' }}>
+          <div className="stats-grid" style={{ maxWidth: 720, margin: '0 auto', textAlign: 'center' }}>
             {[
               { val: 50000, suf: '+', label: 'Hashtags analyzed' },
               { val: 94,    suf: '',  label: 'Avg opportunity score' },
@@ -581,7 +613,7 @@ export default function LandingPage() {
               <p className="label-eyebrow" style={{ marginBottom: 12 }}>Features</p>
               <h2 style={{ fontFamily: 'Inter Tight, Inter, sans-serif', fontSize: 'clamp(24px,3vw,38px)', fontWeight: 700, letterSpacing: '-0.025em', color: '#111111' }}>Built for serious creators</h2>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }}>
+            <div className="features-grid">
               {FEATURES.map(({ icon, title, desc }, i) => (
                 <FeatureCard key={title} icon={icon} title={title} desc={desc} delay={i * 60} />
               ))}
@@ -597,7 +629,7 @@ export default function LandingPage() {
               <h2 style={{ fontFamily: 'Inter Tight, Inter, sans-serif', fontSize: 'clamp(24px,3vw,38px)', fontWeight: 700, letterSpacing: '-0.025em', color: '#111111', marginBottom: 12 }}>Simple, transparent pricing</h2>
               <p style={{ fontSize: 16, color: '#71717A' }}>Start free. Upgrade when you need more.</p>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 20 }}>
+            <div className="pricing-grid">
               {PLANS.map((plan, i) => <PricingCard key={plan.name} plan={plan} delay={i * 80} />)}
             </div>
           </div>

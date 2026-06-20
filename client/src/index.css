@@ -500,3 +500,137 @@ body {
 p, span, li, a, button, label, input, textarea {
   font-size: inherit;
 }
+
+/* ─── Mobile Responsive ──────────────────────────────────────────────────── */
+
+/* Dashboard: stat cards + 2-col layout */
+@media (max-width: 768px) {
+  /* Stat grid: 2 cols on mobile */
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Main 3-col -> single col */
+  .grid-cols-3 {
+    grid-template-columns: 1fr !important;
+  }
+  .col-span-2 {
+    grid-column: span 1 !important;
+  }
+
+  /* Padding adjustments */
+  .p-8 {
+    padding: 1.25rem !important;
+  }
+
+  /* Sidebar: hidden on mobile, toggled via JS */
+  aside.app-sidebar {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.22,1,0.36,1);
+    width: 240px !important;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.12);
+  }
+  aside.app-sidebar.open {
+    transform: translateX(0);
+  }
+  .sidebar-overlay {
+    display: block !important;
+  }
+}
+
+@media (min-width: 769px) {
+  aside.app-sidebar {
+    transform: translateX(0) !important;
+  }
+  .sidebar-overlay {
+    display: none !important;
+  }
+  .mobile-nav-toggle {
+    display: none !important;
+  }
+}
+
+/* ─── Responsive utility classes ─────────────────────────────────────────── */
+.hide-mobile { display: flex; }
+.show-mobile { display: none; }
+
+/* Demo cards: 3-col desktop → 1-col mobile */
+.demo-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+/* Stats bar: 4-col desktop → 2-col mobile */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+}
+
+/* Features grid: 3-col → 1-col */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+/* Pricing grid: 3-col → stacked */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .hide-mobile { display: none !important; }
+  .show-mobile { display: flex !important; }
+
+  .demo-cards-grid {
+    grid-template-columns: 1fr !important;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 20px !important;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .pricing-grid {
+    grid-template-columns: 1fr !important;
+    max-width: 400px !important;
+  }
+
+  /* Sidebar overlay */
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 99;
+    display: none;
+  }
+  .sidebar-overlay.visible {
+    display: block;
+  }
+
+  /* Stat cards 2-col on dashboard */
+  .grid.grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .grid.grid-cols-3 {
+    grid-template-columns: 1fr !important;
+  }
+  .col-span-2 {
+    grid-column: span 1 !important;
+  }
+}
