@@ -5,6 +5,7 @@ import { Bookmark, Plus, Hash, ChevronRight, ArrowRight, Folder, FolderOpen, Loa
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest, queryClient } from '@/lib/queryClient';
+import { TiltCard } from '@/components/AppAnimations';
 import type { Collection, Hashtag } from '@shared/schema';
 
 function scoreColor(s: number) {
@@ -53,6 +54,7 @@ function CollectionCard({ collection }: { collection: Collection }) {
   });
 
   return (
+    <TiltCard intensity={8}>
     <div className="bento-tile overflow-hidden p-0" data-testid={`collection-${collection.id}`}>
       <button onClick={() => setExpanded(e => !e)}
         className="w-full flex items-center justify-between px-5 py-4 text-left cursor-pointer hover:bg-[#FAFAFA] transition-colors">
@@ -98,6 +100,7 @@ function CollectionCard({ collection }: { collection: Collection }) {
         </div>
       )}
     </div>
+    </TiltCard>
   );
 }
 
@@ -117,14 +120,14 @@ export default function CollectionsPage() {
       {isLoading ? (
         <div className="space-y-3">{[...Array(3)].map((_, i) => <Skeleton key={i} className="h-[72px] rounded-xl bg-[#F4F4F5]" />)}</div>
       ) : !collections?.length ? (
-        <div className="bento-tile p-10 text-center">
+        <TiltCard intensity={5}><div className="bento-tile p-10 text-center">
           <div className="w-12 h-12 rounded-xl bg-[#F4F4F5] flex items-center justify-center mx-auto mb-3">
             <Bookmark size={20} className="text-[#A1A1AA]" />
           </div>
           <p className="text-[14px] font-medium text-[#111111] mb-1">No collections yet</p>
           <p className="text-[13px] text-[#71717A] mb-5 max-w-xs mx-auto">Save hashtag sets from your results for quick access.</p>
           <Link href="/generator"><a className="no-underline btn-primary inline-flex">Generate your first set</a></Link>
-        </div>
+        </div></TiltCard>
       ) : (
         <div className="space-y-3">
           {collections.map(col => <CollectionCard key={col.id} collection={col} />)}

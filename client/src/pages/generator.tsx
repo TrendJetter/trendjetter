@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLocation } from 'wouter';
 import { useMutation } from '@tanstack/react-query';
+import { TiltCard } from '@/components/AppAnimations';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -70,13 +71,15 @@ const TOPICS: Record<string, string[]> = {
 
 function SectionCard({ title, icon: Icon, children }: { title: string; icon: any; children: React.ReactNode }) {
   return (
-    <div className="bento-tile p-6">
-      <div className="flex items-center gap-2 mb-5">
-        <Icon size={14} className="text-[#A1A1AA]" />
-        <span className="label-eyebrow">{title}</span>
+    <TiltCard intensity={7}>
+      <div className="bento-tile p-6">
+        <div className="flex items-center gap-2 mb-5">
+          <Icon size={14} className="text-[#A1A1AA]" />
+          <span className="label-eyebrow">{title}</span>
+        </div>
+        {children}
       </div>
-      {children}
-    </div>
+    </TiltCard>
   );
 }
 

@@ -1,6 +1,7 @@
 import { Switch, Route, Router, Link } from 'wouter';
 import { useHashLocation } from 'wouter/use-hash-location';
 import TrendJetterLogo from '@/components/TrendJetterLogo';
+import { useGlobalCursorSpotlight } from '@/components/AppAnimations';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import {
@@ -31,10 +32,20 @@ function AppShell({ children }: { children: React.ReactNode }) {
   const [loc] = useHashLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  // Activate the global cursor glow effect inside the app shell
+  useGlobalCursorSpotlight();
+
   const { data: user } = useQuery<UserType>({ queryKey: ['/api/me'] });
 
   return (
-    <div className="flex h-screen" style={{ background: '#FAFAFA' }}>
+    <div
+      className="flex h-screen"
+      style={{
+        background: '#FAFAFA',
+        backgroundImage: 'radial-gradient(circle, #D0D0D6 1px, transparent 1px)',
+        backgroundSize: '20px 20px',
+      }}
+    >
 
       {/* ── Sidebar ── */}
       <aside

@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { Sparkles, Copy, Check, Hash, FileText, Calendar, Globe, Loader2, RefreshCw, ChevronDown } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
+import { TiltCard } from '@/components/AppAnimations';
 
 interface ContentResult {
   caption: string;
@@ -45,22 +46,22 @@ function CopyBtn({ text }: { text: string }) {
 function ResultSection({ result }: { result: ContentResult }) {
   return (
     <div className="space-y-3 mt-6">
-      <div className="bento-tile p-5">
+      <TiltCard intensity={7}><div className="bento-tile p-5">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2"><FileText size={13} className="text-[#A1A1AA]" /><span className="label-eyebrow">Caption</span></div>
           <CopyBtn text={result.caption} />
         </div>
         <p className="text-[14px] text-[#111111] leading-relaxed whitespace-pre-wrap" style={{ fontFamily: 'Inter, sans-serif' }}>{result.caption}</p>
-      </div>
-      <div className="bento-tile p-5">
+      </div></TiltCard>
+      <TiltCard intensity={7}><div className="bento-tile p-5">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2"><Hash size={13} className="text-[#A1A1AA]" /><span className="label-eyebrow">Hashtags ({result.hashtags.length})</span></div>
           <CopyBtn text={result.hashtags.join(' ')} />
         </div>
         <div className="flex flex-wrap gap-1.5">{result.hashtags.map((t, i) => <span key={i} className="tag-pill">{t}</span>)}</div>
-      </div>
+      </div></TiltCard>
       <div className="grid grid-cols-2 gap-3">
-        <div className="bento-tile p-5">
+        <TiltCard intensity={8}><div className="bento-tile p-5">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2"><Globe size={13} className="text-[#A1A1AA]" /><span className="label-eyebrow">SEO Keywords</span></div>
             <CopyBtn text={result.seoKeywords.join(', ')} />
@@ -73,8 +74,8 @@ function ResultSection({ result }: { result: ContentResult }) {
               </div>
             ))}
           </div>
-        </div>
-        <div className="bento-tile p-5">
+        </div></TiltCard>
+        <TiltCard intensity={8}><div className="bento-tile p-5">
           <div className="flex items-center gap-2 mb-3"><Calendar size={13} className="text-[#A1A1AA]" /><span className="label-eyebrow">Best Times</span></div>
           <div className="space-y-2">
             <div>
@@ -88,7 +89,7 @@ function ResultSection({ result }: { result: ContentResult }) {
             <div><p className="text-[11px] text-[#A1A1AA] mb-0.5">Frequency</p><p className="text-[13px] text-[#52525B]">{result.postingSchedule.frequency}</p></div>
             <div><p className="text-[11px] text-[#A1A1AA] mb-0.5">Tip</p><p className="text-[12px] text-[#71717A] leading-relaxed">{result.postingSchedule.tips}</p></div>
           </div>
-        </div>
+        </div></TiltCard>
       </div>
     </div>
   );
@@ -118,7 +119,7 @@ export default function ContentPage() {
         <span className="text-[11px] font-semibold uppercase tracking-widest px-2.5 py-1 rounded-full bg-[#F4F4F5] text-[#52525B] border border-[#E4E4E7]">Pro</span>
       </div>
 
-      <div className="bento-tile p-6 space-y-5">
+      <TiltCard intensity={5}><div className="bento-tile p-6 space-y-5">
         <div>
           <label className="label-eyebrow mb-2 block">Content Topic</label>
           <input value={topic} onChange={e => setTopic(e.target.value)} placeholder="Describe what you're posting about…"
@@ -171,7 +172,7 @@ export default function ContentPage() {
             : result ? <><RefreshCw size={15} /> Regenerate</>
             : <><Sparkles size={15} /> Generate Content Package</>}
         </button>
-      </div>
+      </div></TiltCard>
 
       {result && <ResultSection result={result} />}
       {!result && !mutation.isPending && (

@@ -4,6 +4,7 @@ import { Link } from 'wouter';
 import { TrendingUp, Hash, ArrowUpRight, Filter } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { apiRequest } from '@/lib/queryClient';
+import { TiltCard } from '@/components/AppAnimations';
 import type { TrendRecord } from '@shared/schema';
 
 function scoreColor(s: number) {
@@ -32,6 +33,7 @@ function TrendCard({ trend }: { trend: TrendRecord }) {
   const score = trend.opportunityScore ?? 0;
   const growth = trend.growthRate ?? 0;
   return (
+    <TiltCard intensity={10}>
     <div className="bento-tile group cursor-pointer" data-testid={`trend-${trend.id}`}>
       <div className="flex items-start justify-between mb-3">
         <span className="font-mono text-[13px] font-medium text-[#111111]">{trend.hashtag}</span>
@@ -66,6 +68,7 @@ function TrendCard({ trend }: { trend: TrendRecord }) {
         <ArrowUpRight size={13} className="text-[#D4D4D8] group-hover:text-[#111111] transition-colors" />
       </div>
     </div>
+    </TiltCard>
   );
 }
 
@@ -98,6 +101,7 @@ export default function TrendsPage() {
       </div>
 
       {/* Filters */}
+      <TiltCard intensity={5}>
       <div className="bento-tile p-4 mb-6">
         <div className="flex items-start gap-6">
           <div>
@@ -142,6 +146,7 @@ export default function TrendsPage() {
           </div>
         </div>
       </div>
+      </TiltCard>
 
       {/* Grid */}
       {isLoading ? (

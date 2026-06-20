@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from 'wouter';
 import { Hash, TrendingUp, Bookmark, Sparkles, ArrowRight, ArrowUpRight, Clock, BarChart2 } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
+import { TiltCard } from '@/components/AppAnimations';
 import type { User, Search } from '@shared/schema';
 
 // ─── Score helpers ─────────────────────────────────────────────────────────
@@ -44,16 +45,18 @@ function Sparkline({ data, color = '#0891B2' }: { data: number[]; color?: string
 // ─── Metric card ────────────────────────────────────────────────────────────
 function MetricCard({ label, value, delta, spark }: { label: string; value: string; delta?: string; spark?: number[] }) {
   return (
-    <div className="bento-tile">
-      <div className="flex items-start justify-between mb-3">
-        <span className="label-eyebrow">{label}</span>
-        {delta && <span className="text-[12px] font-medium text-green-600">{delta}</span>}
+    <TiltCard intensity={10}>
+      <div className="bento-tile h-full">
+        <div className="flex items-start justify-between mb-3">
+          <span className="label-eyebrow">{label}</span>
+          {delta && <span className="text-[12px] font-medium text-green-600">{delta}</span>}
+        </div>
+        <div className="flex items-end justify-between">
+          <span className="text-[28px] font-bold tabular tracking-display" style={{ fontFamily: 'Inter Tight, Inter, sans-serif', color: '#111111', letterSpacing: '-0.03em' }}>{value}</span>
+          {spark && <Sparkline data={spark} />}
+        </div>
       </div>
-      <div className="flex items-end justify-between">
-        <span className="text-[28px] font-bold tabular tracking-display" style={{ fontFamily: 'Inter Tight, Inter, sans-serif', color: '#111111', letterSpacing: '-0.03em' }}>{value}</span>
-        {spark && <Sparkline data={spark} />}
-      </div>
-    </div>
+    </TiltCard>
   );
 }
 
@@ -89,103 +92,109 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
 
         {/* Recent searches — spans 2 cols */}
-        <div className="lg:col-span-2 bento-tile">
-          <div className="flex items-center justify-between mb-5">
-            <div className="flex items-center gap-2">
-              <Clock size={14} className="text-[#A1A1AA]" />
-              <span className="label-eyebrow">Recent Searches</span>
-            </div>
-            <Link href="/generator">
-              <a className="no-underline flex items-center gap-1 text-[12px] font-medium text-[#111111] hover:text-[#52525B] transition-colors">
-                New search <ArrowRight size={12} />
-              </a>
-            </Link>
-          </div>
-
-          {searchesLoading ? (
-            <div className="space-y-3">
-              {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-12 rounded-lg bg-[#F4F4F5]" />)}
-            </div>
-          ) : recent.length === 0 ? (
-            <div className="flex flex-col items-center py-10 gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#F4F4F5] flex items-center justify-center">
-                <Hash size={18} className="text-[#A1A1AA]" />
+        <TiltCard className="lg:col-span-2" intensity={6}>
+          <div className="bento-tile">
+            <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center gap-2">
+                <Clock size={14} className="text-[#A1A1AA]" />
+                <span className="label-eyebrow">Recent Searches</span>
               </div>
-              <p className="text-[13px] text-[#A1A1AA]">No searches yet</p>
               <Link href="/generator">
-                <a className="no-underline btn-primary text-[13px] py-2 px-4">Generate hashtags</a>
+                <a className="no-underline flex items-center gap-1 text-[12px] font-medium text-[#111111] hover:text-[#52525B] transition-colors">
+                  New search <ArrowRight size={12} />
+                </a>
               </Link>
             </div>
-          ) : (
-            <div className="space-y-1">
-              {recent.map(s => (
-                <Link key={s.id} href={`/results/${s.id}`}>
-                  <a className="no-underline flex items-center justify-between px-3 py-3 rounded-lg hover:bg-[#F4F4F5] transition-colors group">
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-7 h-7 rounded-md bg-[#F4F4F5] flex items-center justify-center shrink-0 group-hover:bg-white transition-colors">
-                        <Hash size={12} className="text-[#52525B]" />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-[13px] font-medium text-[#111111] truncate leading-none mb-0.5" style={{ letterSpacing: '-0.01em' }}>
-                          {s.contentTopic || s.locationCity}
-                        </p>
-                        <p className="text-[11px] text-[#A1A1AA] leading-none">
-                          {s.platform} · {s.locationCity}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3 shrink-0">
-                      <span className="text-[11px] text-[#A1A1AA]">{new Date(s.createdAt!).toLocaleDateString()}</span>
-                      <ArrowUpRight size={12} className="text-[#D4D4D8] group-hover:text-[#111111] transition-colors" />
-                    </div>
-                  </a>
+
+            {searchesLoading ? (
+              <div className="space-y-3">
+                {[...Array(4)].map((_, i) => <Skeleton key={i} className="h-12 rounded-lg bg-[#F4F4F5]" />)}
+              </div>
+            ) : recent.length === 0 ? (
+              <div className="flex flex-col items-center py-10 gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#F4F4F5] flex items-center justify-center">
+                  <Hash size={18} className="text-[#A1A1AA]" />
+                </div>
+                <p className="text-[13px] text-[#A1A1AA]">No searches yet</p>
+                <Link href="/generator">
+                  <a className="no-underline btn-primary text-[13px] py-2 px-4">Generate hashtags</a>
                 </Link>
-              ))}
-            </div>
-          )}
-        </div>
+              </div>
+            ) : (
+              <div className="space-y-1">
+                {recent.map(s => (
+                  <Link key={s.id} href={`/results/${s.id}`}>
+                    <a className="no-underline flex items-center justify-between px-3 py-3 rounded-lg hover:bg-[#F4F4F5] transition-colors group">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="w-7 h-7 rounded-md bg-[#F4F4F5] flex items-center justify-center shrink-0 group-hover:bg-white transition-colors">
+                          <Hash size={12} className="text-[#52525B]" />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-[13px] font-medium text-[#111111] truncate leading-none mb-0.5" style={{ letterSpacing: '-0.01em' }}>
+                            {s.contentTopic || s.locationCity}
+                          </p>
+                          <p className="text-[11px] text-[#A1A1AA] leading-none">
+                            {s.platform} · {s.locationCity}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3 shrink-0">
+                        <span className="text-[11px] text-[#A1A1AA]">{new Date(s.createdAt!).toLocaleDateString()}</span>
+                        <ArrowUpRight size={12} className="text-[#D4D4D8] group-hover:text-[#111111] transition-colors" />
+                      </div>
+                    </a>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        </TiltCard>
 
         {/* Quick actions */}
         <div className="flex flex-col gap-4">
-          <div className="bento-tile">
-            <span className="label-eyebrow mb-4 block">Quick Actions</span>
-            <div className="space-y-2">
-              {[
-                { href: '/generator', icon: Hash, label: 'Generate hashtags', desc: 'New intelligence report' },
-                { href: '/trends', icon: TrendingUp, label: 'Browse trends', desc: "What's hot right now" },
-                { href: '/content', icon: Sparkles, label: 'Content assistant', desc: 'AI caption + schedule' },
-                { href: '/collections', icon: Bookmark, label: 'Collections', desc: 'Saved hashtag sets' },
-              ].map(({ href, icon: Icon, label, desc }) => (
-                <Link key={href} href={href}>
-                  <a className="no-underline flex items-center gap-3 p-2.5 rounded-lg hover:bg-[#F4F4F5] transition-colors group">
-                    <div className="w-7 h-7 rounded-md bg-[#F4F4F5] flex items-center justify-center shrink-0 group-hover:bg-white transition-colors">
-                      <Icon size={13} className="text-[#52525B]" />
-                    </div>
-                    <div>
-                      <p className="text-[12.5px] font-medium text-[#111111] leading-none mb-0.5" style={{ letterSpacing: '-0.01em' }}>{label}</p>
-                      <p className="text-[11px] text-[#A1A1AA] leading-none">{desc}</p>
-                    </div>
-                  </a>
-                </Link>
-              ))}
+          <TiltCard intensity={8}>
+            <div className="bento-tile">
+              <span className="label-eyebrow mb-4 block">Quick Actions</span>
+              <div className="space-y-2">
+                {[
+                  { href: '/generator', icon: Hash, label: 'Generate hashtags', desc: 'New intelligence report' },
+                  { href: '/trends', icon: TrendingUp, label: 'Browse trends', desc: "What's hot right now" },
+                  { href: '/content', icon: Sparkles, label: 'Content assistant', desc: 'AI caption + schedule' },
+                  { href: '/collections', icon: Bookmark, label: 'Collections', desc: 'Saved hashtag sets' },
+                ].map(({ href, icon: Icon, label, desc }) => (
+                  <Link key={href} href={href}>
+                    <a className="no-underline flex items-center gap-3 p-2.5 rounded-lg hover:bg-[#F4F4F5] transition-colors group">
+                      <div className="w-7 h-7 rounded-md bg-[#F4F4F5] flex items-center justify-center shrink-0 group-hover:bg-white transition-colors">
+                        <Icon size={13} className="text-[#52525B]" />
+                      </div>
+                      <div>
+                        <p className="text-[12.5px] font-medium text-[#111111] leading-none mb-0.5" style={{ letterSpacing: '-0.01em' }}>{label}</p>
+                        <p className="text-[11px] text-[#A1A1AA] leading-none">{desc}</p>
+                      </div>
+                    </a>
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
+          </TiltCard>
 
           {/* Plan badge */}
-          <div className="bento-tile" style={{ background: '#111111', borderColor: '#111111' }}>
-            <div className="flex items-center gap-2 mb-2">
-              <BarChart2 size={13} style={{ color: 'rgba(255,255,255,0.6)' }} />
-              <span className="text-[11px] font-semibold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.5)' }}>Pro Plan</span>
+          <TiltCard intensity={8}>
+            <div className="bento-tile" style={{ background: '#111111', borderColor: '#111111' }}>
+              <div className="flex items-center gap-2 mb-2">
+                <BarChart2 size={13} style={{ color: 'rgba(255,255,255,0.6)' }} />
+                <span className="text-[11px] font-semibold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.5)' }}>Pro Plan</span>
+              </div>
+              <p className="text-[13px] font-medium mb-3" style={{ color: '#FFFFFF', letterSpacing: '-0.01em' }}>
+                Unlimited searches, all platforms, content assistant.
+              </p>
+              <Link href="/account">
+                <a className="no-underline text-[12px] font-medium flex items-center gap-1 transition-opacity hover:opacity-70" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                  Manage plan <ArrowRight size={11} />
+                </a>
+              </Link>
             </div>
-            <p className="text-[13px] font-medium mb-3" style={{ color: '#FFFFFF', letterSpacing: '-0.01em' }}>
-              Unlimited searches, all platforms, content assistant.
-            </p>
-            <Link href="/account">
-              <a className="no-underline text-[12px] font-medium flex items-center gap-1 transition-opacity hover:opacity-70" style={{ color: 'rgba(255,255,255,0.7)' }}>
-                Manage plan <ArrowRight size={11} />
-              </a>
-            </Link>
-          </div>
+          </TiltCard>
         </div>
       </div>
     </div>
