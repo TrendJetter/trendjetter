@@ -531,7 +531,12 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
       const body = generateSchema.parse(req.body);
       let gen: GenerateResult;
       if (process.env.ANTHROPIC_API_KEY) {
-        gen = await generateHashtagsWithAI(body);
+        try {
+          gen = await generateHashtagsWithAI(body);
+        } catch (aiErr: any) {
+          console.warn('AI generation failed, using static fallback:', aiErr.message);
+          gen = generateHashtags(body);
+        }
       } else {
         gen = generateHashtags(body);
       }
@@ -661,7 +666,12 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
       const body = contentSchema.parse(req.body);
       let content: { caption: string; hashtags: string[]; seoKeywords: string[]; postingSchedule: string };
       if (process.env.ANTHROPIC_API_KEY) {
-        content = await generateContentWithAI(body.topic, body.platform, body.industry, body.tone);
+        try {
+          content = await generateContentWithAI(body.topic, body.platform, body.industry, body.tone);
+        } catch (aiErr: any) {
+          console.warn('AI content generation failed, using static fallback:', aiErr.message);
+          content = generateContent(body.topic, body.platform, body.industry, body.tone);
+        }
       } else {
         content = generateContent(body.topic, body.platform, body.industry, body.tone);
       }
