@@ -61,8 +61,36 @@ async function buildAll() {
   });
 
   console.log("building vercel api handler...");
+  // Write a temporary entry point if it doesn't exist (api/index.ts is gitignored).
+  // This makes the build reproducible in any environment including Vercel CI.
+  const { writeFile, access } = await import("node:fs/promises");
+  const apiEntry = "api/index.ts";
+  let createdEntry = false;
+  try {
+    await access(apiEntry);
+  } catch {
+    // File doesn't exist — create it temporarily for this build
+    await writeFile(apiEntry, [
+      'import "dotenv/config";',
+      'import express from "express";',
+      'import { createServer } from "node:http";',
+      'import { registerRoutes } from "../server/routes";',
+      'const app = express();',
+      'const httpServer = createServer(app);',
+      'app.use(express.json());',
+      'app.use(express.urlencoded({ extended: false }));',
+      'let initialized = false;',
+      'const initPromise = registerRoutes(httpServer, app).then(() => { initialized = true; });',
+      'export default async function handler(req: any, res: any) {',
+      '  if (!initialized) await initPromise;',
+      '  app(req, res);',
+      '}',
+    ].join("\n"));
+    createdEntry = true;
+  }
+
   await esbuild({
-    entryPoints: ["api/index.ts"],
+    entryPoints: [apiEntry],
     platform: "node",
     bundle: true,
     format: "cjs",
@@ -75,6 +103,12 @@ async function buildAll() {
     external: externals.filter(e => e !== '@anthropic-ai/sdk' && e !== '@supabase/supabase-js'),
     logLevel: "info",
   });
+
+  // Clean up the temp entry if we created it
+  if (createdEntry) {
+    const { unlink } = await import("node:fs/promises");
+    await unlink(apiEntry).catch(() => {});
+  }
 }
 
 buildAll().catch((err) => {
