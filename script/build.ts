@@ -61,36 +61,45 @@ async function buildAll() {
   });
 
   console.log("building vercel api handler...");
-  // Write a temporary entry point if it doesn't exist (api/index.ts is gitignored).
-  // This makes the build reproducible in any environment including Vercel CI.
-  const { writeFile, access } = await import("node:fs/promises");
-  const apiEntry = "api/index.ts";
-  let createdEntry = false;
-  try {
-    await access(apiEntry);
-  } catch {
-    // File doesn't exist — create it temporarily for this build
-    await writeFile(apiEntry, [
-      'import "dotenv/config";',
-      'import express from "express";',
-      'import { createServer } from "node:http";',
-      'import { registerRoutes } from "../server/routes";',
-      'const app = express();',
-      'const httpServer = createServer(app);',
-      'app.use(express.json());',
-      'app.use(express.urlencoded({ extended: false }));',
-      'let initialized = false;',
-      'const initPromise = registerRoutes(httpServer, app).then(() => { initialized = true; });',
-      'export default async function handler(req: any, res: any) {',
-      '  if (!initialized) await initPromise;',
-      '  app(req, res);',
-      '}',
-    ].join("\n"));
-    createdEntry = true;
-  }
+  // Use esbuild stdin so we never need api/index.ts in the repo.
+  // The handler is emitted as a plain CJS function via module.exports — no ESM export dance.
+  const apiExternals = externals.filter(
+    (e) => e !== "@anthropic-ai/sdk" && e !== "@supabase/supabase-js"
+  );
 
   await esbuild({
-    entryPoints: [apiEntry],
+    stdin: {
+      // Use require() interop pattern — this file is treated as CJS entry.
+      // module.exports is directly set to the handler function so Vercel's
+      // @vercel/node runtime receives a plain CJS function with no ESM dance.
+      contents: `
+const express = require("express");
+const { createServer } = require("node:http");
+const { registerRoutes } = require("./server/routes");
+
+const app = express();
+const httpServer = createServer(app);
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+let initialized = false;
+let initError = null;
+const initPromise = registerRoutes(httpServer, app)
+  .then(() => { initialized = true; })
+  .catch((e) => { initError = e; });
+
+module.exports = async function handler(req, res) {
+  if (!initialized && !initError) await initPromise;
+  if (initError) {
+    res.status(500).json({ error: initError.message || "Init failed" });
+    return;
+  }
+  app(req, res);
+};
+`,
+      resolveDir: ".",
+      loader: "js",
+    },
     platform: "node",
     bundle: true,
     format: "cjs",
@@ -99,16 +108,9 @@ async function buildAll() {
       "process.env.NODE_ENV": '"production"',
     },
     minify: true,
-    // Bundle @anthropic-ai/sdk and @supabase/supabase-js — pure JS, no native binaries
-    external: externals.filter(e => e !== '@anthropic-ai/sdk' && e !== '@supabase/supabase-js'),
+    external: apiExternals,
     logLevel: "info",
   });
-
-  // Clean up the temp entry if we created it
-  if (createdEntry) {
-    const { unlink } = await import("node:fs/promises");
-    await unlink(apiEntry).catch(() => {});
-  }
 }
 
 buildAll().catch((err) => {
