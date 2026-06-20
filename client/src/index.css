@@ -470,3 +470,33 @@ input, textarea, select {
 [data-radix-popper-content-wrapper] {
   z-index: 9999;
 }
+
+/* ─── Global cursor glow — follows mouse everywhere ──────────────────────── */
+:root {
+  --glow-x: 50vw;
+  --glow-y: 50vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: radial-gradient(
+    circle 500px at var(--glow-x) var(--glow-y),
+    rgba(8, 145, 178, 0.06) 0%,
+    rgba(8, 145, 178, 0.02) 40%,
+    transparent 70%
+  );
+  transition: background 0.04s linear;
+}
+
+/* ─── Font size bump — slightly larger everywhere ─────────────────────────── */
+body {
+  font-size: 15px;
+}
+
+p, span, li, a, button, label, input, textarea {
+  font-size: inherit;
+}

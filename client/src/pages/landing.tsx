@@ -29,7 +29,19 @@ function useLenis() {
   }, []);
 }
 
-// ─── Cursor spotlight ─────────────────────────────────────────────────────────
+// ─── Global cursor spotlight (follows mouse everywhere on the page) ───────────
+function useGlobalCursorSpotlight() {
+  useEffect(() => {
+    function move(e: MouseEvent) {
+      document.documentElement.style.setProperty('--glow-x', `${e.clientX}px`);
+      document.documentElement.style.setProperty('--glow-y', `${e.clientY}px`);
+    }
+    window.addEventListener('mousemove', move, { passive: true });
+    return () => window.removeEventListener('mousemove', move);
+  }, []);
+}
+
+// ─── Scoped spotlight (kept for SpotlightSection sections) ───────────────────
 function useCursorSpotlight(ref: React.RefObject<HTMLElement>) {
   useEffect(() => {
     const el = ref.current;
@@ -127,7 +139,7 @@ function AnimNum({ target, suffix = '' }: { target: number; suffix?: string }) {
 }
 
 // ─── Scroll-entrance card with 3D tilt ───────────────────────────────────────
-function FadeCard({ children, delay = 0, highlight = false, tilt = false, style: extraStyle = {} }: {
+function FadeCard({ children, delay = 0, highlight = false, tilt = true, style: extraStyle = {} }: {
   children: React.ReactNode; delay?: number; highlight?: boolean; tilt?: boolean; style?: React.CSSProperties;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -147,7 +159,7 @@ function FadeCard({ children, delay = 0, highlight = false, tilt = false, style:
     const rect = e.currentTarget.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;   // -0.5 … 0.5
     const y = (e.clientY - rect.top)  / rect.height - 0.5;
-    setTransform(`perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-4px) scale(1.012)`);
+    setTransform(`perspective(500px) rotateY(${x * 14}deg) rotateX(${-y * 14}deg) translateY(-8px) scale(1.022)`);  
   }, [tilt]);
 
   const onMouseLeave = useCallback(() => setTransform(''), []);
@@ -169,7 +181,7 @@ function FadeCard({ children, delay = 0, highlight = false, tilt = false, style:
         border: `1px solid ${highlight ? '#111111' : '#E4E4E7'}`,
         borderRadius: 12,
         boxShadow: transform
-          ? '0 16px 48px rgba(0,0,0,0.12)'
+          ? '0 24px 64px rgba(0,0,0,0.18)'
           : highlight ? '0 2px 8px rgba(0,0,0,0.06)' : '0 1px 3px rgba(0,0,0,0.04)',
         willChange: 'transform',
         ...extraStyle,
@@ -285,8 +297,8 @@ function FeatureCard({ icon: Icon, title, desc, delay = 0 }: { icon: any; title:
         }}>
           <Icon size={15} style={{ color: hovered ? '#FFFFFF' : '#52525B', transition: 'color 0.2s ease' }} />
         </div>
-        <h3 style={{ fontSize: 14, fontWeight: 600, color: '#111111', letterSpacing: '-0.01em', marginBottom: 6 }}>{title}</h3>
-        <p style={{ fontSize: 13, color: '#71717A', lineHeight: 1.6 }}>{desc}</p>
+        <h3 style={{ fontSize: 15, fontWeight: 600, color: '#111111', letterSpacing: '-0.01em', marginBottom: 6 }}>{title}</h3>
+        <p style={{ fontSize: 14, color: '#71717A', lineHeight: 1.6 }}>{desc}</p>
       </div>
     </FadeCard>
   );
@@ -302,7 +314,7 @@ function PricingCard({ plan, delay = 0 }: { plan: typeof PLANS[number]; delay?: 
         </div>
       )}
       <div>
-        <p style={{ fontSize: 14, fontWeight: 600, color: '#111111', letterSpacing: '-0.01em', marginBottom: 4 }}>{plan.name}</p>
+        <p style={{ fontSize: 15, fontWeight: 600, color: '#111111', letterSpacing: '-0.01em', marginBottom: 4 }}>{plan.name}</p>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 2, marginBottom: 4 }}>
           <span style={{ fontFamily: 'Inter Tight, Inter, sans-serif', fontSize: 28, fontWeight: 700, color: '#111111', letterSpacing: '-0.03em' }}>{plan.price}</span>
           <span style={{ fontSize: 13, color: '#A1A1AA' }}>{plan.period}</span>
@@ -385,6 +397,7 @@ function SpotlightSection({ children, style: extraStyle }: { children: React.Rea
 export default function LandingPage() {
   const sectionRef = useRef<HTMLElement>(null);
   useLenis();
+  useGlobalCursorSpotlight();
 
   return (
     <div style={{ backgroundColor: '#FFFFFF', color: '#111111', fontFamily: 'Inter, sans-serif' }}>
@@ -406,7 +419,7 @@ export default function LandingPage() {
             {(['Features','Pricing'] as const).map(label => (
               <a key={label} href={`#${label.toLowerCase()}`}
                 onClick={e => { e.preventDefault(); document.getElementById(label.toLowerCase())?.scrollIntoView({ behavior: 'smooth' }); }}
-                style={{ fontSize: 14, color: '#52525B', textDecoration: 'none', transition: 'color 0.15s' }}
+                style={{ fontSize: 15, color: '#52525B', textDecoration: 'none', transition: 'color 0.15s' }}
                 onMouseEnter={e => (e.currentTarget.style.color='#111111')}
                 onMouseLeave={e => (e.currentTarget.style.color='#52525B')}
               >{label}</a>
@@ -441,7 +454,7 @@ export default function LandingPage() {
               <span style={{ color: '#0891B2' }}>Start using intelligence.</span>
             </h1>
             <p className="hero-fade-3" style={{
-              fontSize: 17, color: '#71717A', maxWidth: 480, margin: '0 auto 40px', lineHeight: 1.65, letterSpacing: '-0.01em',
+              fontSize: 18, color: '#71717A', maxWidth: 500, margin: '0 auto 40px', lineHeight: 1.65, letterSpacing: '-0.01em',
             }}>
               TrendJetter scores every hashtag by opportunity, competition, growth, and local relevance — then tells you exactly which ones to use.
             </p>
@@ -522,7 +535,7 @@ export default function LandingPage() {
             <div style={{ textAlign: 'center', marginBottom: 48 }}>
               <p className="label-eyebrow" style={{ marginBottom: 12 }}>The Intelligence Difference</p>
               <h2 style={{ fontFamily: 'Inter Tight, Inter, sans-serif', fontSize: 'clamp(24px,3vw,38px)', fontWeight: 700, letterSpacing: '-0.025em', color: '#111111', marginBottom: 12 }}>Data vs. Intelligence</h2>
-              <p style={{ fontSize: 15, color: '#71717A', maxWidth: 400, margin: '0 auto' }}>Most tools show you numbers. TrendJetter tells you what to do.</p>
+              <p style={{ fontSize: 16, color: '#71717A', maxWidth: 400, margin: '0 auto' }}>Most tools show you numbers. TrendJetter tells you what to do.</p>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
               <div className="bento-tile p-6" style={{ opacity: 0.6 }}>
@@ -578,7 +591,7 @@ export default function LandingPage() {
             <div style={{ textAlign: 'center', marginBottom: 48 }}>
               <p className="label-eyebrow" style={{ marginBottom: 12 }}>Pricing</p>
               <h2 style={{ fontFamily: 'Inter Tight, Inter, sans-serif', fontSize: 'clamp(24px,3vw,38px)', fontWeight: 700, letterSpacing: '-0.025em', color: '#111111', marginBottom: 12 }}>Simple, transparent pricing</h2>
-              <p style={{ fontSize: 15, color: '#71717A' }}>Start free. Upgrade when you need more.</p>
+              <p style={{ fontSize: 16, color: '#71717A' }}>Start free. Upgrade when you need more.</p>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 20 }}>
               {PLANS.map((plan, i) => <PricingCard key={plan.name} plan={plan} delay={i * 80} />)}
@@ -592,7 +605,7 @@ export default function LandingPage() {
             <h2 style={{ fontFamily: 'Inter Tight, Inter, sans-serif', fontSize: 'clamp(24px,3vw,38px)', fontWeight: 700, letterSpacing: '-0.025em', color: '#111111', marginBottom: 16 }}>
               Ready to use real intelligence?
             </h2>
-            <p style={{ fontSize: 15, color: '#71717A', marginBottom: 32, lineHeight: 1.65 }}>Stop guessing which hashtags work. TrendJetter scores, ranks, and tells you exactly what to post.</p>
+            <p style={{ fontSize: 16, color: '#71717A', marginBottom: 32, lineHeight: 1.65 }}>Stop guessing which hashtags work. TrendJetter scores, ranks, and tells you exactly what to post.</p>
             <Link href="/generator">
               <MagneticBtn className="btn-primary" style={{ fontSize: 15, padding: '12px 32px' }} data-testid="final-cta">
                 <Hash size={16} /> Start for free
