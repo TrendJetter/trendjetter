@@ -6,7 +6,7 @@ interface LogoProps {
   iconOnly?: boolean;
 }
 
-export default function TrendJetterLogo({ color = '#111111', height = 28, iconOnly = false }: LogoProps) {
+export default function TrendJetterLogo({ color = '#111111', height = 32, iconOnly = false }: LogoProps) {
   const iconSize = height;
 
   if (iconOnly) {
@@ -21,12 +21,8 @@ export default function TrendJetterLogo({ color = '#111111', height = 28, iconOn
     );
   }
 
-  // Full lockup — icon + SVG wordmark side by side
-  const wordmarkHeight = height;
-  const wordmarkWidth = wordmarkHeight * (260 / 48); // approx aspect ratio
-
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: Math.round(height * 0.35) }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: Math.round(height * 0.4) }}>
       <img
         src={logoIcon}
         alt=""
@@ -36,28 +32,20 @@ export default function TrendJetterLogo({ color = '#111111', height = 28, iconOn
           display: 'block',
           objectFit: 'contain',
           filter: color === '#FFFFFF' || color === 'white' ? 'invert(1)' : 'none',
+          flexShrink: 0,
         }}
       />
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 260 48"
-        width={wordmarkWidth}
-        height={wordmarkHeight}
-        fill="none"
-        aria-label="trendjetter"
-      >
-        <text
-          x="0"
-          y="38"
-          fontFamily="'Inter Tight', 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif"
-          fontWeight="800"
-          fontSize="42"
-          letterSpacing="-2"
-          fill={color}
-        >
-          trendjetter
-        </text>
-      </svg>
+      <span style={{
+        fontFamily: "'Inter Tight', 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif",
+        fontWeight: 800,
+        fontSize: Math.round(height * 0.85),
+        letterSpacing: '-0.03em',
+        color: color,
+        lineHeight: 1,
+        whiteSpace: 'nowrap',
+      }}>
+        trendjetter
+      </span>
     </div>
   );
 }

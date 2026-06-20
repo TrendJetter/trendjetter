@@ -47,14 +47,8 @@ function AppShell({ children }: { children: React.ReactNode }) {
         `}
       >
         {/* Logo */}
-        <div className="flex items-center gap-2.5 px-5 h-14 border-b border-[#E4E4E7] shrink-0">
-          <div
-            className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
-            style={{ background: '#111111' }}
-          >
-            <Hash size={14} style={{ color: '#FFFFFF' }} />
-          </div>
-          <TrendJetterLogo height={20} color="#111111" />
+        <div className="flex items-center px-4 h-14 border-b border-[#E4E4E7] shrink-0">
+          <TrendJetterLogo height={32} color="#111111" />
         </div>
 
         {/* Nav links */}
@@ -129,14 +123,7 @@ function AppShell({ children }: { children: React.ReactNode }) {
           >
             <Menu size={18} className="text-[#52525B]" />
           </button>
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-md bg-[#111111] flex items-center justify-center">
-              <Hash size={12} className="text-white" />
-            </div>
-            <span className="font-semibold text-[14px] text-[#111111]" style={{ fontFamily: 'Inter Tight, Inter, sans-serif', letterSpacing: '-0.02em' }}>
-              TrendJetter
-            </span>
-          </div>
+          <TrendJetterLogo height={30} color="#111111" />
         </div>
 
         <main className="flex-1 overflow-y-auto">

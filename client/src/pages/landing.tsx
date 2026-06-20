@@ -421,7 +421,7 @@ export default function LandingPage() {
         }}>
           {/* Main bar */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 24px', height: 60 }}>
-            <TrendJetterLogo height={22} color="#111111" />
+            <TrendJetterLogo height={36} color="#111111" />
             {/* Desktop links */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 28 }} className="hide-mobile">
               {(['Features','Pricing'] as const).map(label => (
