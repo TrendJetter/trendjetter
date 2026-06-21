@@ -19,7 +19,6 @@ export default function SignUpPage() {
       </div>
 
       <SignUp
-        routing="hash"
         signInUrl="/#/sign-in"
         afterSignUpUrl="/#/dashboard"
         appearance={{

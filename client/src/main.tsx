@@ -15,7 +15,13 @@ if (!PUBLISHABLE_KEY) {
 }
 
 createRoot(document.getElementById("root")!).render(
-  <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+  <ClerkProvider
+    publishableKey={PUBLISHABLE_KEY}
+    afterSignInUrl="/#/dashboard"
+    afterSignUpUrl="/#/dashboard"
+    signInUrl="/#/sign-in"
+    signUpUrl="/#/sign-up"
+  >
     <QueryClientProvider client={queryClient}>
       <App />
     </QueryClientProvider>
