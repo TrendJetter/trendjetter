@@ -9,7 +9,7 @@ import {
   FileText, ChevronRight, Menu, LogOut
 } from 'lucide-react';
 import { Toaster } from '@/components/ui/toaster';
-import { useAuth, useUser, UserButton, SignOutButton } from '@clerk/clerk-react';
+import { useAuth, useUser, UserButton, SignOutButton, RedirectToSignIn } from '@clerk/clerk-react';
 import type { User as UserType } from '@shared/schema';
 
 import LandingPage     from '@/pages/landing';
@@ -44,9 +44,7 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
   }
 
   if (!isSignedIn) {
-    // Redirect to sign-in
-    if (typeof window !== 'undefined') window.location.hash = '#/sign-in';
-    return null;
+    return <RedirectToSignIn afterSignInUrl="/#/dashboard" />;
   }
 
   return <>{children}</>;
