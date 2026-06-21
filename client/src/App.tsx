@@ -44,7 +44,9 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
   }
 
   if (!isSignedIn) {
-    return <RedirectToSignIn afterSignInUrl="/#/dashboard" />;
+    // Send to Clerk hosted sign-in, come back to dashboard after
+    window.location.href = 'https://simple-pheasant-19.accounts.dev/sign-in?redirect_url=https%3A%2F%2Fwww.trendjetter.io%2F%23%2Fdashboard';
+    return null;
   }
 
   return <>{children}</>;
@@ -176,8 +178,9 @@ export default function App() {
       <Switch>
         {/* Public routes */}
         <Route path="/" component={LandingPage} />
-        <Route path="/sign-in" component={SignInPage} />
-        <Route path="/sign-up" component={SignUpPage} />
+        {/* sign-in/up handled by Clerk hosted pages — these catch any stray hash routes */}
+        <Route path="/sign-in">{() => { window.location.href = "https://simple-pheasant-19.accounts.dev/sign-in?redirect_url=https%3A%2F%2Fwww.trendjetter.io%2F%23%2Fdashboard"; return null; }}</Route>
+        <Route path="/sign-up">{() => { window.location.href = "https://simple-pheasant-19.accounts.dev/sign-up?redirect_url=https%3A%2F%2Fwww.trendjetter.io%2F%23%2Fdashboard"; return null; }}</Route>
 
         {/* Protected app shell routes */}
         <Route path="/dashboard">
