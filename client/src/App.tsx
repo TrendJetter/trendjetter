@@ -22,6 +22,8 @@ import ContentPage     from '@/pages/content';
 import AccountPage     from '@/pages/account';
 import SignInPage      from '@/pages/sign-in';
 import SignUpPage      from '@/pages/sign-up';
+import PrivacyPage     from '@/pages/privacy';
+import TermsPage       from '@/pages/terms';
 
 const NAV = [
   { href: '/dashboard',   label: 'Dashboard',  icon: LayoutDashboard },
@@ -199,6 +201,8 @@ export default function App() {
         <Route path="/content">
           <AuthGuard><AppShell><ContentPage /></AppShell></AuthGuard>
         </Route>
+        <Route path="/privacy" component={PrivacyPage} />
+        <Route path="/terms" component={TermsPage} />
         <Route path="/account">
           <AuthGuard><AppShell><AccountPage /></AppShell></AuthGuard>
         </Route>

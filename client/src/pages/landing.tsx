@@ -666,11 +666,16 @@ export default function LandingPage() {
             </div>
             <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)' }}>© 2026 TrendJetter. Built for serious creators.</p>
             <div style={{ display: 'flex', gap: 20 }}>
-              {['Privacy', 'Terms', 'Support'].map(l => (
-                <button key={l} style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', background: 'none', border: 'none', cursor: 'pointer', transition: 'color 0.15s' }}
+              {[
+                { label: 'Privacy', href: '/#/privacy' },
+                { label: 'Terms',   href: '/#/terms' },
+                { label: 'Support', href: 'mailto:hi@trendjetter.io' },
+              ].map(({ label, href }) => (
+                <a key={label} href={href}
+                  style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', textDecoration: 'none', cursor: 'pointer', transition: 'color 0.15s' }}
                   onMouseEnter={e => (e.currentTarget.style.color='rgba(255,255,255,0.7)')}
                   onMouseLeave={e => (e.currentTarget.style.color='rgba(255,255,255,0.4)')}
-                >{l}</button>
+                >{label}</a>
               ))}
             </div>
           </div>
