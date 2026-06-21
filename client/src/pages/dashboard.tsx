@@ -74,7 +74,7 @@ export default function DashboardPage() {
         {userLoading
           ? <Skeleton className="h-7 w-48 mb-1 bg-[#F4F4F5]" />
           : <h1 className="text-[22px] font-bold text-[#111111] mb-1" style={{ fontFamily: 'Inter Tight, Inter, sans-serif', letterSpacing: '-0.025em' }}>
-              Good afternoon, {user?.name?.split(' ')[0] ?? 'Will'}
+              {(() => { const h = new Date().getHours(); return h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening'; })()}, {user?.name?.split(' ')[0] ?? 'there'}
             </h1>
         }
         <p className="text-[14px] text-[#71717A]">Here's your hashtag intelligence overview.</p>

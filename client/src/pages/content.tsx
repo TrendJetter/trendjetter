@@ -97,7 +97,7 @@ function ResultSection({ result }: { result: ContentResult }) {
 
 export default function ContentPage() {
   const { toast } = useToast();
-  const [topic, setTopic] = useState('Morning Workout Routine Tips');
+  const [topic, setTopic] = useState('');
   const [platform, setPlatform] = useState('instagram');
   const [industry, setIndustry] = useState('fitness');
   const [tone, setTone] = useState('Energetic');

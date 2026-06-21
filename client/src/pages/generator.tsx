@@ -92,9 +92,9 @@ export default function GeneratorPage() {
     resolver: zodResolver(schema),
     defaultValues: {
       locationCity: '',
-      locationState: 'OK',
-      industry: 'fitness',
-      contentTopic: 'Morning Workout Routines',
+      locationState: '',
+      industry: '',
+      contentTopic: '',
       platform: 'instagram',
       goal: 'local_reach',
     },
@@ -103,7 +103,7 @@ export default function GeneratorPage() {
   const industry = form.watch('industry');
   const platform = form.watch('platform');
   const goal = form.watch('goal');
-  const suggestions = TOPICS[industry] ?? TOPICS.default;
+  const suggestions = industry ? (TOPICS[industry] ?? TOPICS.default) : [];
 
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [upgradeReason, setUpgradeReason] = useState('');
