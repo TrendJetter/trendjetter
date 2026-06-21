@@ -213,7 +213,13 @@ function MagneticBtn({ children, className, style: extraStyle, href, onClick, 'd
 
   const handleClick = useCallback(() => {
     if (onClick) { onClick(); return; }
-    if (href) navigate(href);
+    if (href) {
+      if (href.startsWith('http://') || href.startsWith('https://')) {
+        window.location.href = href;
+      } else {
+        navigate(href);
+      }
+    }
   }, [href, onClick, navigate]);
 
   return (
