@@ -369,7 +369,7 @@ const PLANS = [
   { name: 'Free',   price: '$0',  period: '/month', desc: 'For creators just getting started', highlight: false,
     features: ['5 searches/month', '20 hashtags per search', 'Basic scoring', 'Instagram only'], cta: 'Get started free' },
   { name: 'Pro',    price: '$29', period: '/month', desc: 'For serious creators and brands',   highlight: true,
-    features: ['Unlimited searches', '20+ hashtags per search', 'Full intelligence scores', 'All 6 platforms', 'Saved collections', 'Content assistant', 'CSV export'], cta: 'Start free trial' },
+    features: ['Unlimited searches', '30 hashtags per search', 'Full intelligence scores', 'All 6 platforms', 'Saved collections', 'Content assistant', 'CSV export'], cta: 'Start free trial' },
   { name: 'Agency', price: '$99', period: '/month', desc: 'For teams and agencies',            highlight: false,
     features: ['Everything in Pro', '5 team seats', 'White-label reports', 'API access', 'Priority support'], cta: 'Contact sales' },
 ];

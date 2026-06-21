@@ -196,17 +196,17 @@ Return ONLY valid JSON (no markdown, no explanation) with this exact shape:
   "postingRecommendation": "best posting times and frequency"
 }
 
-Generate exactly 21 hashtags across 5 groups:
-- 4 high_volume: broad industry tags (popularityScore 80-99, competitionScore 75-95, opportunityScore 20-45)
-- 4 medium: mid-tier industry tags (popularityScore 50-75, competitionScore 45-70, opportunityScore 45-65)
-- 4 niche: topic-specific tags (popularityScore 15-45, competitionScore 15-40, opportunityScore 65-90)
-- 5 local: ${o?`city/region tags for ${o}`:"niche community tags (e.g. #[topic]community, #[topic]creator, #[topic]2026)"} (localRelevanceScore 75-99, competitionScore 10-35, opportunityScore 70-92)
-- 4 trending: platform-specific tags aligned to goal (trendDirection "rising", opportunityScore 55-80)
+Generate exactly 30 hashtags across 5 groups (6 per group):
+- 6 high_volume: broad industry tags with massive reach (popularityScore 80-99, competitionScore 75-95, opportunityScore 20-45)
+- 6 medium: solid mid-tier tags with good engagement (popularityScore 50-75, competitionScore 45-70, opportunityScore 45-65)
+- 6 niche: highly specific topic tags that attract ideal audience (popularityScore 15-45, competitionScore 15-40, opportunityScore 65-90)
+- 6 local: ${o?`hyper-local city/region/neighborhood tags for ${o}`:"tight niche community tags (e.g. #[topic]community, #[topic]creator, #[topic]2026, #[topic]tips)"} (localRelevanceScore 75-99, competitionScore 10-35, opportunityScore 70-92)
+- 6 trending: fast-rising platform-specific tags aligned to goal and current 2026 trends (trendDirection "rising", opportunityScore 55-80)
 
 overallScore = round((popularityScore*0.2) + ((100-competitionScore)*0.3) + (opportunityScore*0.3) + (localRelevanceScore*0.2))
 
 trendDirection must be one of: "rising", "stable", "declining"
-All tags start with #. Local tags must reference ${o} geography. Use real hashtags people actually use.`,l=await f6.messages.create({model:"claude-haiku-4-5",max_tokens:4096,messages:[{role:"user",content:c}]}),d=l.content[0].text.trim().replace(/^```(?:json)?\n?/,"").replace(/\n?```$/,"").trim(),p;try{p=JSON.parse(d)}catch{let h=d.indexOf("{"),g=d.lastIndexOf("}");if(h!==-1&&g!==-1&&g>h)p=JSON.parse(d.slice(h,g+1));else throw new Error(`Claude returned invalid JSON. stop_reason: ${l.stop_reason}`)}return p}async function SQ(n,e,t,r){let i=`You are a social media content expert. Write a high-performing ${e} post for:
+All tags start with #. Local tags must reference ${o} geography. Use real hashtags people actually use.`,l=await f6.messages.create({model:"claude-haiku-4-5",max_tokens:6e3,messages:[{role:"user",content:c}]}),d=l.content[0].text.trim().replace(/^```(?:json)?\n?/,"").replace(/\n?```$/,"").trim(),p;try{p=JSON.parse(d)}catch{let h=d.indexOf("{"),g=d.lastIndexOf("}");if(h!==-1&&g!==-1&&g>h)p=JSON.parse(d.slice(h,g+1));else throw new Error(`Claude returned invalid JSON. stop_reason: ${l.stop_reason}`)}return p}async function SQ(n,e,t,r){let i=`You are a social media content expert. Write a high-performing ${e} post for:
 
 Topic: ${n}
 Industry: ${t.replace(/_/g," ")}

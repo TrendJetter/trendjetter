@@ -5,7 +5,7 @@ import type { User as UserType } from '@shared/schema';
 
 const PLANS = {
   free:   { name: 'Free',   price: '$0',  features: ['5 searches/month', '20 hashtags per search', 'Basic scoring', 'Instagram only'] },
-  pro:    { name: 'Pro',    price: '$29', features: ['Unlimited searches', '20+ hashtags per search', 'Full intelligence scores', 'All 6 platforms', 'Saved collections', 'Content assistant', 'CSV export'] },
+  pro:    { name: 'Pro',    price: '$29', features: ['Unlimited searches', '30 hashtags per search', 'Full intelligence scores', 'All 6 platforms', 'Saved collections', 'Content assistant', 'CSV export'] },
   agency: { name: 'Agency', price: '$99', features: ['Everything in Pro', '5 team seats', 'White-label reports', 'API access', 'Priority support'] },
 };
 

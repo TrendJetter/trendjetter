@@ -317,7 +317,7 @@ export default function GeneratorPage() {
               : <><Hash size={15} /> Generate Intelligence Report</>
             }
           </button>
-          <p className="text-center text-[12px] text-[#A1A1AA]">20+ scored hashtags across 5 strategic groups{genTime ? ` · ${genTime}s` : ' · ~2–4 seconds'}</p>
+          <p className="text-center text-[12px] text-[#A1A1AA]">30 scored hashtags across 5 strategic groups{genTime ? ` · ${genTime}s` : ' · ~2–4 seconds'}</p>
         </form>
       </Form>
       <UpgradeModal
