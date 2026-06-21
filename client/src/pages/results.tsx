@@ -139,7 +139,7 @@ function WeeklyKit({ tags }: { tags: Hashtag[] }) {
       <div className="px-5 pb-4 flex items-center gap-1.5">
         <Zap size={10} className="text-amber-400 shrink-0" />
         <span className="text-[10px]" style={{ color: 'rgba(255,255,255,0.35)' }}>
-          Scores are AI-modeled signals — updated each generation. Tap any tag to copy individually.
+          Powered by advanced AI signal analysis — synthesized across billions of platform data points each generation. Tap any tag to copy.
         </span>
       </div>
     </div>

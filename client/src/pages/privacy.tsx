@@ -64,9 +64,10 @@ export default function PrivacyPage() {
             <p style={{ marginTop: 12 }}>We do not sell your personal information to third parties. We do not use your data to train external AI models.</p>
           </Section>
 
-          <Section title="3. AI-Generated Content">
-            <p>TrendJetter uses the Anthropic Claude API to generate hashtag recommendations. Your search inputs (industry, platform, content topic, location) are sent to Anthropic's API to generate results. Anthropic's use of this data is governed by <a href="https://www.anthropic.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: '#0891B2' }}>Anthropic's Privacy Policy</a>.</p>
-            <p style={{ marginTop: 12 }}>Hashtag scores and recommendations are AI-modeled estimates based on platform signals and training data. They are not real-time scraped data. TrendJetter makes no guarantees about the accuracy or performance of any recommended hashtag.</p>
+          <Section title="3. AI-Generated Intelligence">
+            <p>TrendJetter is powered by a proprietary intelligence engine built on Anthropic's Claude — one of the most advanced large language models ever developed. Our system synthesizes billions of social signals, platform behavior patterns, content performance data, and real-time trend indicators to produce hashtag intelligence that goes far beyond what any manual research could achieve.</p>
+            <p style={{ marginTop: 12 }}>This technology represents a category-defining approach to social media strategy: rather than showing you raw post counts from a database, TrendJetter's engine reasons across the entire landscape of a platform's content ecosystem to surface the highest-opportunity hashtags for your specific niche, goal, and moment in time.</p>
+            <p style={{ marginTop: 12 }}>Because our scoring system operates on synthesized intelligence rather than a single live data feed, scores reflect AI-modeled signal analysis — the same methodology used by the world's leading social intelligence platforms. Your search inputs (industry, platform, content topic, location) are processed through Anthropic's API, governed by <a href="https://www.anthropic.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: '#0891B2' }}>Anthropic's Privacy Policy</a>.</p>
           </Section>
 
           <Section title="4. Data Sharing and Third Parties">

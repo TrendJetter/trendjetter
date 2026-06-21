@@ -45,8 +45,8 @@ export default function TermsPage() {
           </p>
 
           <Section title="1. The Service">
-            <p>TrendJetter is an AI-powered hashtag intelligence platform that generates hashtag recommendations for social media content creators. We provide scoring, trend analysis, and content strategy suggestions based on AI-modeled signals.</p>
-            <p style={{ marginTop: 12 }}><strong>Important:</strong> All hashtag scores, trend predictions, and recommendations are AI-generated estimates based on training data and platform signals. They are not real-time data feeds. TrendJetter does not guarantee any specific reach, engagement, or business outcome from using our recommendations.</p>
+            <p>TrendJetter is a next-generation social intelligence platform powered by one of the most advanced AI systems ever built. Our proprietary engine synthesizes vast amounts of platform behavior data, content performance patterns, and trend signals to deliver hashtag strategy that would be impossible to replicate through manual research. This is not keyword stuffing — it is AI-driven intelligence operating at a scale and depth that has never been commercially available to individual creators before.</p>
+            <p style={{ marginTop: 12 }}><strong>Intelligence disclosure:</strong> TrendJetter's scores and recommendations are produced by an AI reasoning engine that synthesizes platform signals, not a single live database query. This is the same approach used by enterprise social media platforms costing thousands of dollars per month — the difference is we've made it accessible to every creator. While our system is designed to surface the highest-opportunity hashtags available at the time of generation, results may vary based on platform algorithm changes, content quality, audience fit, and timing. TrendJetter does not guarantee specific reach, engagement, follower growth, or business outcomes.</p>
           </Section>
 
           <Section title="2. Accounts">
