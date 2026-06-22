@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import UpgradeModal from '@/components/UpgradeModal';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { TiltCard } from '@/components/AppAnimations';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -165,6 +165,12 @@ export default function GeneratorPage() {
   const [genTime, setGenTime] = useState<number | null>(null);
   const genStartRef = useRef<number>(0);
 
+  // ── Usage query — only for free users, refetch after each generation ──
+  const { data: usageData, refetch: refetchUsage } = useQuery<{ count: number; limit: number; plan: string }>({
+    queryKey: ['/api/usage'],
+    staleTime: 0,
+  });
+
   const mutation = useMutation({
     mutationFn: async (data: FormValues) => {
       genStartRef.current = Date.now();
@@ -174,6 +180,7 @@ export default function GeneratorPage() {
     },
     onSuccess: (result) => {
       setGenTime(Math.round((Date.now() - genStartRef.current) / 100) / 10);
+      refetchUsage();
       navigate(`/results/${result.id}`);
     },
     onError: (err: any) => {
@@ -189,14 +196,88 @@ export default function GeneratorPage() {
     },
   });
 
+  // ── Usage pill helpers ──
+  const isFree = !usageData || usageData.plan === 'free';
+  const usageCount = usageData?.count ?? 0;
+  const usageLimit = usageData?.limit ?? 3;
+
+  // Color ramp: green → amber → red
+  const pillStyle = (() => {
+    if (!isFree) return null; // hidden for paid plans
+    if (usageCount >= usageLimit) {
+      return { bg: '#FEF2F2', text: '#DC2626', border: '#FECACA' }; // red — at limit
+    }
+    if (usageCount >= usageLimit - 1) {
+      return { bg: '#FFFBEB', text: '#D97706', border: '#FDE68A' }; // amber — 1 left
+    }
+    return { bg: '#F0FDFA', text: '#0F766E', border: '#99F6E4' }; // teal — comfortable
+  })();
+
   return (
     <div className="p-8 max-w-2xl mx-auto">
       {mutation.isPending && <GeneratingOverlay />}
       <div className="mb-8">
-        <h1 className="text-[22px] font-bold text-[#111111] mb-1" style={{ fontFamily: 'Inter Tight, Inter, sans-serif', letterSpacing: '-0.025em' }}>
-          Hashtag Generator
-        </h1>
-        <p className="text-[14px] text-[#71717A]">Generate scored hashtag intelligence for your content.</p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-[22px] font-bold text-[#111111] mb-1" style={{ fontFamily: 'Inter Tight, Inter, sans-serif', letterSpacing: '-0.025em' }}>
+              Hashtag Generator
+            </h1>
+            <p className="text-[14px] text-[#71717A]">Generate scored hashtag intelligence for your content.</p>
+          </div>
+
+          {/* Usage pill — free users only */}
+          {isFree && pillStyle && (
+            <div
+              data-testid="usage-pill"
+              className="flex-shrink-0 flex items-center gap-2 px-3 py-1.5 rounded-full border text-[12px] font-medium"
+              style={{
+                background: pillStyle.bg,
+                color: pillStyle.text,
+                border: `1px solid ${pillStyle.border}`,
+                fontFamily: 'Inter, sans-serif',
+              }}
+            >
+              <span>
+                {usageCount >= usageLimit
+                  ? 'Limit reached'
+                  : `${usageCount} / ${usageLimit} searches`}
+              </span>
+              {usageCount >= usageLimit - 1 && (
+                <button
+                  type="button"
+                  data-testid="pill-upgrade-btn"
+                  onClick={() => { setUpgradeReason(''); setShowUpgrade(true); }}
+                  className="underline underline-offset-2 hover:opacity-70 transition-opacity cursor-pointer"
+                  style={{ color: pillStyle.text }}
+                >
+                  Upgrade
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Warn banner when at limit */}
+        {isFree && usageCount >= usageLimit && (
+          <div
+            data-testid="usage-limit-banner"
+            className="mt-4 flex items-center justify-between px-4 py-3 rounded-xl border"
+            style={{ background: '#FEF2F2', borderColor: '#FECACA' }}
+          >
+            <p className="text-[13px] font-medium text-[#DC2626]">
+              You’ve used all {usageLimit} free searches this month.
+            </p>
+            <button
+              type="button"
+              data-testid="limit-banner-upgrade-btn"
+              onClick={() => { setUpgradeReason(`You've used all ${usageLimit} free searches this month.`); setShowUpgrade(true); }}
+              className="text-[13px] font-semibold text-white px-3 py-1.5 rounded-lg cursor-pointer transition-opacity hover:opacity-80"
+              style={{ background: '#111111', fontFamily: 'Inter, sans-serif' }}
+            >
+              Upgrade →
+            </button>
+          </div>
+        )}
       </div>
 
       <Form {...form}>

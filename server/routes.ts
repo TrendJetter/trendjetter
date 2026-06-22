@@ -585,6 +585,14 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     res.json({ ...user, usage });
   });
 
+  // ── Usage (lightweight, for generator pill) ──
+  app.get('/api/usage', async (req, res) => {
+    const resolved = await resolveUser(req);
+    if (!resolved) return res.status(401).json({ error: 'Unauthorized' });
+    const usage = await storage.getUsageForUser(resolved.id);
+    res.json(usage);
+  });
+
   // ── Generate hashtags ──
   const generateSchema = z.object({
     locationCity: z.string().optional().default(''),
