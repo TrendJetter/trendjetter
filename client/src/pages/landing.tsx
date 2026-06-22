@@ -816,10 +816,11 @@ export default function LandingPage() {
         {/* ── Final CTA — spotlight dot grid ── */}
         <SpotlightSection style={{ padding: '96px 32px', textAlign: 'center', borderTop: '1px solid #E4E4E7' }}>
           <div style={{ maxWidth: 560, margin: '0 auto', position: 'relative' }}>
-            <h2 style={{ fontFamily: 'Inter Tight, Inter, sans-serif', fontSize: 'clamp(24px,3vw,38px)', fontWeight: 700, letterSpacing: '-0.025em', color: '#111111', marginBottom: 16 }}>
-              The best hashtag generator — free to try.
+            <h2 style={{ fontFamily: 'Inter Tight, Inter, sans-serif', fontSize: 'clamp(28px,3.5vw,48px)', fontWeight: 800, letterSpacing: '-0.03em', color: '#111111', marginBottom: 16, lineHeight: 1.08 }}>
+              Your competitors are guessing.<br />
+              <span style={{ color: '#0891B2' }}>You don&apos;t have to.</span>
             </h2>
-            <p style={{ fontSize: 16, color: '#71717A', marginBottom: 32, lineHeight: 1.65 }}>Stop guessing which hashtags work. Get AI-powered hashtag scores, trend data, and a ready-to-post strategy in under 2 seconds.</p>
+            <p style={{ fontSize: 16, color: '#71717A', marginBottom: 32, lineHeight: 1.65 }}>TrendJetter scores every hashtag across 7 dimensions and tells you exactly what to post — in under 2 seconds.</p>
             <MagneticBtn href="https://accounts.trendjetter.io/sign-up?redirect_url=https%3A%2F%2Fwww.trendjetter.io%2F%23%2Fdashboard" className="btn-primary" style={{ fontSize: 15, padding: '12px 32px' }} data-testid="final-cta">
               <Hash size={16} /> Start for free
             </MagneticBtn>
