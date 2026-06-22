@@ -3,6 +3,7 @@ import { createServer } from 'node:http';
 import type { Server } from 'node:http';
 import Anthropic from '@anthropic-ai/sdk';
 import Stripe from 'stripe';
+import rateLimit from 'express-rate-limit';
 import { storage } from './storage';
 import { insertSearchSchema, insertCollectionSchema, insertCollectionTagSchema, insertContentGenerationSchema } from '@shared/schema';
 import type { InsertHashtag } from '@shared/schema';
@@ -539,6 +540,24 @@ function generateContent(topic: string, platform: string, industry: string, tone
 // Express Routes
 // ─────────────────────────────────────────────
 
+// ── Rate limiters ────────────────────────────────────────────────────────────
+const generateLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 10,             // max 10 generations per minute per IP
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests — please wait a moment before generating again.' },
+  skip: (req) => process.env.NODE_ENV === 'development',
+});
+
+const apiLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 120,            // 120 general API calls per minute per IP
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests.' },
+});
+
 export async function registerRoutes(httpServer: Server, app: Express): Promise<Server> {
   // ── Auth: resolve Clerk user to DB user ──
   async function resolveUser(req: any): Promise<{ id: number } | null> {
@@ -574,7 +593,7 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     goal: z.string().min(1),
   });
 
-  app.post('/api/generate', async (req, res) => {
+  app.post('/api/generate', generateLimiter, async (req, res) => {
     try {
       const resolved = await resolveUser(req);
       if (!resolved) return res.status(401).json({ error: 'Unauthorized' });
@@ -784,7 +803,7 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
 
 
   // ── Stripe: Create checkout session ──
-  app.post('/api/stripe/checkout', async (req, res) => {
+  app.post('/api/stripe/checkout', apiLimiter, async (req, res) => {
     if (!stripe) return res.status(500).json({ error: 'Stripe not configured' });
     try {
       const resolved = await resolveUser(req);
@@ -820,7 +839,7 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
   });
 
   // ── Stripe: Customer portal ──
-  app.post('/api/stripe/portal', async (req, res) => {
+  app.post('/api/stripe/portal', apiLimiter, async (req, res) => {
     if (!stripe) return res.status(500).json({ error: 'Stripe not configured' });
     try {
       const resolved = await resolveUser(req);
@@ -851,12 +870,13 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     const sig = req.headers['stripe-signature'] as string;
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
     let event: Stripe.Event;
+    if (!webhookSecret || !sig) {
+      return res.status(400).json({ error: 'Webhook signature missing — cannot process unsigned events.' });
+    }
     try {
-      event = webhookSecret && sig
-        ? stripe.webhooks.constructEvent(req.body, sig, webhookSecret)
-        : (req.body as Stripe.Event);
+      event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
     } catch (err: any) {
-      return res.status(400).json({ error: `Webhook error: ${err.message}` });
+      return res.status(400).json({ error: `Webhook signature verification failed: ${err.message}` });
     }
     try {
       switch (event.type) {

@@ -4,6 +4,7 @@ import type { Request } from 'express';
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "node:http";
+import cors from 'cors';
 
 const app = express();
 const httpServer = createServer(app);
@@ -13,6 +14,24 @@ declare module "http" {
     rawBody: unknown;
   }
 }
+
+// ── CORS ─────────────────────────────────────────────────────────────────────
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production'
+    ? ['https://trendjetter.io', 'https://www.trendjetter.io']
+    : true,
+  credentials: true,
+}));
+
+// ── Security headers ──────────────────────────────────────────────────────────
+app.use((_req, res, next) => {
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  next();
+});
 
 app.use(
   express.json({
