@@ -71,15 +71,17 @@ function ScrollRevealQuote({ children, sectionRef }: { children: string; section
       const winH = window.innerHeight;
       const sectionRect = section!.getBoundingClientRect();
       const sectionH = section!.offsetHeight;
-      // Progress: 0 when section top enters viewport bottom, 1 when section bottom leaves viewport top
-      const scrolled = winH - sectionRect.top;
-      const total = sectionH;  // use just the extra scroll, not +winH, for tighter mapping
-      const sectionProgress = Math.max(0, Math.min(1, scrolled / total));
+      // Attio behaviour: words are ALL gray until the section is fully sticky
+      // (sectionRect.top <= 0). Only then does the fill animation begin.
+      // The "extra" scrollable distance after sticky locks = sectionH - winH.
+      const extraScroll = sectionH - winH;          // ~60vh when section is 160vh
+      const scrolledPastLock = -sectionRect.top;    // 0 when just locked, grows as user scrolls
+      const sectionProgress = Math.max(0, Math.min(1, scrolledPastLock / extraScroll));
       const n = words.length;
       const newP = words.map((_, i) => {
-        // spread words across 0.15 → 0.80 of total progress — matches 140vh section height
-        const start = 0.15 + (i / n) * 0.50;
-        const end = start + 0.20;
+        // words fill evenly across 0% → 85% of the locked-scroll window
+        const start = (i / n) * 0.70;
+        const end = start + 0.30;
         const p = Math.max(0, Math.min(1, (sectionProgress - start) / (end - start)));
         return p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p+2, 3)/2;
       });
@@ -556,8 +558,8 @@ const LANDING_PLANS = [
 
 const dotGrid = (bg = '#FFFFFF'): React.CSSProperties => ({
   backgroundColor: bg,
-  backgroundImage: 'radial-gradient(circle, #D0D0D6 1px, transparent 1px)',
-  backgroundSize: '16px 16px',
+  backgroundImage: 'radial-gradient(circle, #DADADF 1px, transparent 1px)',
+  backgroundSize: '20px 20px',
 });
 
 // ─── Spotlight section wrapper ────────────────────────────────────────────────
@@ -734,8 +736,8 @@ export default function LandingPage() {
         <section
           ref={sectionRef}
           style={{
-            ...dotGrid('#FFFFFF'),
-            height: '140vh',
+            ...dotGrid('#F8F8F9'),
+            height: '170vh',
             position: 'relative',
             borderTop: '1px solid #E4E4E7',
             borderBottom: '1px solid #E4E4E7',
