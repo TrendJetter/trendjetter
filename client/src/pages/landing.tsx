@@ -77,9 +77,9 @@ function ScrollRevealQuote({ children, sectionRef }: { children: string; section
       const sectionProgress = Math.max(0, Math.min(1, scrolled / total));
       const n = words.length;
       const newP = words.map((_, i) => {
-        // spread words across 0.1 → 0.75 of total progress so animation is done before bottom
-        const start = 0.08 + (i / n) * 0.52;
-        const end = start + 0.22;
+        // spread words across 0.15 → 0.80 of total progress — matches 140vh section height
+        const start = 0.15 + (i / n) * 0.50;
+        const end = start + 0.20;
         const p = Math.max(0, Math.min(1, (sectionProgress - start) / (end - start)));
         return p < 0.5 ? 4*p*p*p : 1 - Math.pow(-2*p+2, 3)/2;
       });
@@ -735,7 +735,7 @@ export default function LandingPage() {
           ref={sectionRef}
           style={{
             ...dotGrid('#FFFFFF'),
-            height: 'clamp(220vh, 240vh, 260vh)',
+            height: '140vh',
             position: 'relative',
             borderTop: '1px solid #E4E4E7',
             borderBottom: '1px solid #E4E4E7',
@@ -840,7 +840,7 @@ export default function LandingPage() {
         {/* ── Footer ── */}
         <footer style={{ background: '#111111', color: '#FFFFFF' }}>
           {/* Main footer */}
-          <div style={{ maxWidth: 1080, margin: '0 auto', padding: '56px 32px 40px', display: 'grid', gridTemplateColumns: '1.6fr 1fr 1fr 1fr', gap: 40 }}>
+          <div className="footer-grid" style={{ maxWidth: 1080, margin: '0 auto', padding: '56px 32px 40px', display: 'grid', gridTemplateColumns: '1.6fr 1fr 1fr 1fr', gap: 40 }}>
             {/* Brand column */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
