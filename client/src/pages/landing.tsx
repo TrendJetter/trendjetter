@@ -469,7 +469,7 @@ function LandingPricingSection() {
           </div>
         </div>
 
-        <div style={{ display: 'flex', gap: 12, alignItems: 'stretch' }}>
+        <div className="pricing-cards-grid" style={{ display: 'flex', gap: 12, alignItems: 'stretch' }}>
           {LANDING_PLANS.map(plan => (
             <LandingPricingCard key={plan.key} plan={plan} annual={annual} />
           ))}
@@ -733,7 +733,7 @@ export default function LandingPage() {
           ref={sectionRef}
           style={{
             ...dotGrid('#FFFFFF'),
-            height: '300vh',
+            height: '180vh',
             position: 'relative',
             borderTop: '1px solid #E4E4E7',
             borderBottom: '1px solid #E4E4E7',
@@ -742,7 +742,7 @@ export default function LandingPage() {
           <div style={{
             position: 'sticky', top: 0, height: '100vh', width: '100%',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            flexDirection: 'column', padding: '0 48px',
+            flexDirection: 'column', padding: '0 clamp(20px, 5vw, 48px)',
           }}>
             <ScrollRevealQuote sectionRef={sectionRef}>
               {"\"Nobody cares how many posts exist. They care whether the hashtag is worth using.\""}
@@ -762,7 +762,7 @@ export default function LandingPage() {
               <h2 style={{ fontFamily: 'Inter Tight, Inter, sans-serif', fontSize: 'clamp(24px,3vw,38px)', fontWeight: 700, letterSpacing: '-0.025em', color: '#111111', marginBottom: 12 }}>Other hashtag tools vs. TrendJetter</h2>
               <p style={{ fontSize: 16, color: '#71717A', maxWidth: 400, margin: '0 auto' }}>Most tools show you numbers. TrendJetter tells you what to do.</p>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+            <div className="comparison-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
               <div className="bento-tile p-6" style={{ opacity: 0.6 }}>
                 <p className="label-eyebrow" style={{ marginBottom: 16 }}>Generic Analytics Tool</p>
                 {[['#travel','8.4M posts'],['#luxurytravel','3.2M posts'],['#wellness','6.1M posts'],['#skincare','9.8M posts']].map(([tag,posts]) => (
@@ -817,13 +817,13 @@ export default function LandingPage() {
         <SpotlightSection style={{ padding: '96px 32px', textAlign: 'center', borderTop: '1px solid #E4E4E7' }}>
           <div style={{ maxWidth: 560, margin: '0 auto', position: 'relative' }}>
             <h2 style={{ fontFamily: 'Inter Tight, Inter, sans-serif', fontSize: 'clamp(24px,3vw,38px)', fontWeight: 700, letterSpacing: '-0.025em', color: '#111111', marginBottom: 16 }}>
-              The best hashtag generator is free to try
+              The best hashtag generator — free to try.
             </h2>
             <p style={{ fontSize: 16, color: '#71717A', marginBottom: 32, lineHeight: 1.65 }}>Stop guessing which hashtags work. Get AI-powered hashtag scores, trend data, and a ready-to-post strategy in under 2 seconds.</p>
             <MagneticBtn href="https://accounts.trendjetter.io/sign-up?redirect_url=https%3A%2F%2Fwww.trendjetter.io%2F%23%2Fdashboard" className="btn-primary" style={{ fontSize: 15, padding: '12px 32px' }} data-testid="final-cta">
               <Hash size={16} /> Start for free
             </MagneticBtn>
-            <p style={{ fontSize: 12, color: '#A1A1AA', marginTop: 16 }}>No credit card required · 5 searches free every month</p>
+            <p style={{ fontSize: 12, color: '#A1A1AA', marginTop: 16 }}>No credit card required · 3 free searches every month</p>
           </div>
         </SpotlightSection>
 
@@ -903,20 +903,10 @@ export default function LandingPage() {
               {/* Social icons */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
                 {[
-                  { label: 'Instagram', href: 'https://instagram.com', icon: (
+                  { label: '@trendjetter.io', href: 'https://instagram.com/trendjetter.io', icon: (
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
                       <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
                       <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-                    </svg>
-                  )},
-                  { label: 'TikTok', href: 'https://tiktok.com', icon: (
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.74a4.85 4.85 0 0 1-1.01-.05z"/>
-                    </svg>
-                  )},
-                  { label: 'X', href: 'https://x.com', icon: (
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                     </svg>
                   )},
                 ].map(({ label, href, icon }) => (

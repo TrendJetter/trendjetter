@@ -626,6 +626,19 @@ p, span, li, a, button, label, input, textarea {
     max-width: 400px !important;
   }
 
+  /* Comparison cards — stack vertically */
+  .comparison-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* New pricing cards flex → single column */
+  .pricing-cards-grid {
+    flex-direction: column !important;
+    max-width: 400px !important;
+    margin: 0 auto !important;
+  }
+
   /* Sidebar overlay */
   .sidebar-overlay {
     position: fixed;
