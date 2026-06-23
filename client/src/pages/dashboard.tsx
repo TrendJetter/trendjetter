@@ -186,8 +186,8 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
 
         {/* Recent searches — 2 cols */}
-        <TiltCard className="lg:col-span-2" intensity={6}>
-          <div className="bento-tile">
+        <TiltCard className="lg:col-span-2 rounded-xl overflow-hidden" intensity={6}>
+          <div className="bento-tile" style={{ height: "100%" }}>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded-md bg-[#F4F4F5] flex items-center justify-center">

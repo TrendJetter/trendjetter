@@ -307,7 +307,7 @@ export default function GeneratorPage() {
                   <FormControl>
                     <input
                       {...field}
-                      placeholder="OK"
+                      placeholder="e.g. TX"
                       data-testid="input-state"
                       className="w-full h-9 px-3 rounded-lg border border-[#E4E4E7] bg-white text-[14px] text-[#111111] placeholder:text-[#D4D4D8] focus:outline-none focus:border-[#111111] transition-colors"
                       style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '-0.01em' }}
@@ -332,6 +332,7 @@ export default function GeneratorPage() {
                       className="w-full h-9 px-3 rounded-lg border border-[#E4E4E7] bg-white text-[14px] text-[#111111] focus:outline-none focus:border-[#111111] transition-colors appearance-none cursor-pointer"
                       style={{ fontFamily: 'Inter, sans-serif' }}
                     >
+                      <option value="">Select an industry...</option>
                       {INDUSTRIES.map(i => <option key={i.value} value={i.value}>{i.label}</option>)}
                     </select>
                   </FormControl>
