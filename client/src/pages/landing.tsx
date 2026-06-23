@@ -782,6 +782,9 @@ export default function LandingPage() {
                   onMouseLeave={e => (e.currentTarget.style.color='#52525B')}
                 >{label}</a>
               ))}
+              <a href="/#/blog" style={{ fontSize: 15, color: '#52525B', textDecoration: 'none', transition: 'color 0.15s' }}
+                onMouseEnter={e => (e.currentTarget.style.color='#111111')}
+                onMouseLeave={e => (e.currentTarget.style.color='#52525B')}>Blog</a>
               <MagneticBtn href="https://accounts.trendjetter.io/sign-in?redirect_url=https%3A%2F%2Fwww.trendjetter.io%2F%23%2Fdashboard" style={{ fontSize: 15, color: '#52525B' }}>Sign in</MagneticBtn>
               <MagneticBtn href="https://accounts.trendjetter.io/sign-up?redirect_url=https%3A%2F%2Fwww.trendjetter.io%2F%23%2Fdashboard" className="btn-primary" style={{ fontSize: 14, padding: '8px 18px' }} data-testid="hero-cta-nav">Try free</MagneticBtn>
             </div>
@@ -1030,8 +1033,9 @@ export default function LandingPage() {
                 {[
                   { label: 'Features',  href: '/#features' },
                   { label: 'Pricing',   href: '/#pricing' },
+                  { label: 'Blog',      href: '/#/blog' },
                   { label: 'Dashboard', href: '/#/dashboard' },
-                  { label: 'Generator', href: '/#/dashboard' },
+                  { label: 'Generator', href: '/#/generator' },
                 ].map(({ label, href }) => (
                   <a key={label} href={href} style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', textDecoration: 'none', transition: 'color 0.15s' }}
                     onMouseEnter={e => (e.currentTarget.style.color='rgba(255,255,255,0.9)')}

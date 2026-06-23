@@ -26,6 +26,7 @@ import PrivacyPage     from '@/pages/privacy';
 import TermsPage       from '@/pages/terms';
 import WelcomePage     from '@/pages/welcome';
 import AnalyzerPage   from '@/pages/analyzer';
+import BlogRouter     from '@/pages/blog';
 
 const NAV = [
   { href: '/dashboard',   label: 'Dashboard',  icon: LayoutDashboard },
@@ -210,6 +211,8 @@ export default function App() {
         <Route path="/analyzer">
           <AuthGuard><AppShell><AnalyzerPage /></AppShell></AuthGuard>
         </Route>
+        <Route path="/blog">{() => <BlogRouter />}</Route>
+        <Route path="/blog/:slug">{() => <BlogRouter />}</Route>
         <Route path="/privacy" component={PrivacyPage} />
         <Route path="/terms" component={TermsPage} />
         <Route path="/account">
