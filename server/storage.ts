@@ -12,6 +12,7 @@ import type {
   SearchResult
 } from '@shared/schema';
 import supabase from './supabase';
+import { sendWelcomeEmail } from './email';
 
 const PLAN_LIMITS: Record<string, number> = { free: 3, pro: 1000, agency: 5000 };
 

@@ -99,7 +99,7 @@ function welcomeHtml(name: string): string {
                     <p style="margin:0;font-size:14px;color:#52525B;line-height:1.65;font-style:italic;">
                       "The creators winning right now aren't posting more. They're posting smarter."
                     </p>
-                    <p style="margin:8px 0 0;font-size:12px;color:#A1A1AA;">— Jordan Mills, Social Growth Strategist</p>
+                    <p style="margin:8px 0 0;font-size:12px;color:#A1A1AA;">— Gary Vaynerchuk</p>
                   </td>
                 </tr>
               </table>

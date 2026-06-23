@@ -363,15 +363,18 @@ function LandingPricingCard({ plan, annual }: { plan: typeof LANDING_PLANS[numbe
   const btnFg   = isDark ? '#111111' : '#FFFFFF';
   const price   = annual ? plan.annualPrice  : plan.monthlyPrice;
   const period  = annual ? plan.annualPeriod : plan.period;
+  const isPro = plan.key === 'pro';
   return (
     <div style={{
       background: isDark ? '#111111' : '#FFFFFF',
-      border: `1.5px solid ${isDark ? '#2A2A2A' : '#E4E4E7'}`,
+      border: isPro ? '2px solid #0891B2' : `1.5px solid ${isDark ? '#2A2A2A' : '#E4E4E7'}`,
       borderRadius: 14,
-      padding: '24px 20px 20px',
+      padding: isPro ? '28px 22px 24px' : '24px 20px 20px',
       display: 'flex', flexDirection: 'column', gap: 14,
       position: 'relative', flex: 1, minWidth: 0,
-      boxShadow: isDark ? '0 8px 32px rgba(0,0,0,0.22)' : '0 1px 8px rgba(0,0,0,0.04)',
+      boxShadow: isPro ? '0 8px 40px rgba(8,145,178,0.13), 0 2px 12px rgba(0,0,0,0.07)' : isDark ? '0 8px 32px rgba(0,0,0,0.22)' : '0 1px 8px rgba(0,0,0,0.04)',
+      transform: isPro ? 'translateY(-6px)' : 'none',
+      zIndex: isPro ? 2 : 1,
     }}>
       {plan.badge && (
         <div style={{ position: 'absolute', top: 13, right: 13 }}>
@@ -536,23 +539,23 @@ const LANDING_PLANS = [
     monthlyPrice: '$0', annualPrice: '$0', period: '/month', annualPeriod: '/month',
     annualNote: null as string | null, savings: null as string | null, thenNote: '',
     desc: 'For creators just getting started', dark: false, icon: Zap,
-    features: ['3 searches/month', '10 hashtags per search', 'Basic scoring', 'Instagram & TikTok'],
+    features: ['3 searches/month', '10 hashtags per search', 'Basic verdicts only', '2 platforms'],
     cta: 'Get started free',
   },
   {
-    key: 'pro', name: 'Pro', badge: 'MOST POPULAR', badgeBg: '#111111',
+    key: 'pro', name: 'Pro', badge: '⭐ MOST POPULAR', badgeBg: '#0891B2',
     monthlyPrice: '$29', annualPrice: '$23', period: '/mo', annualPeriod: '/mo',
     annualNote: 'billed $276/yr', savings: 'Save $72/yr', thenNote: '',
-    desc: 'For serious creators & brands', dark: false, icon: Zap,
-    features: ['1,000 generations/month', 'AI-powered hashtag intelligence', 'Trend analytics dashboard', 'Collections & saved sets', 'Content assistant', 'Priority support'],
-    cta: 'Get started',
+    desc: 'For serious creators who want real reach', dark: false, icon: Zap,
+    features: ['1,000 searches/month', '30 hashtags with full verdicts', 'Use Now. Rising Fast. Skip.', 'All 6 platforms', 'Trend analytics + collections', 'Content assistant', 'Priority support'],
+    cta: 'Start growing now',
   },
   {
     key: 'agency', name: 'Agency', badge: 'BEST VALUE', badgeBg: '#0891B2',
     monthlyPrice: '$99', annualPrice: '$79', period: '/mo', annualPeriod: '/mo',
     annualNote: 'billed $948/yr', savings: 'Save $240/yr', thenNote: '',
     desc: 'For teams & agencies', dark: true, icon: Building2,
-    features: ['5,000 generations/month', 'Everything in Pro', 'Team seats', 'Client management', 'Bulk export', 'Dedicated support'],
+    features: ['5,000 searches/month', 'Everything in Pro', 'White-label reports', 'API access', 'Bulk export', 'Dedicated support'],
     cta: 'Get started',
   },
 ];
