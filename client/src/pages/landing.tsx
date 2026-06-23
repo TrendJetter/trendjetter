@@ -755,8 +755,8 @@ export default function LandingPage() {
               {"“The creators winning right now aren’t posting more. They’re posting smarter.”"}
             </ScrollRevealQuote>
             <div style={{ marginTop: 40, textAlign: 'center' }}>
-              <p style={{ fontFamily: 'Inter Tight, Inter, sans-serif', fontSize: 15, fontWeight: 600, color: '#111111', letterSpacing: '-0.01em', marginBottom: 4 }}>Jordan Mills</p>
-              <p style={{ fontSize: 12, color: '#A1A1AA', letterSpacing: '0.01em' }}>Social Growth Strategist · Content Director</p>
+              <p style={{ fontFamily: 'Inter Tight, Inter, sans-serif', fontSize: 15, fontWeight: 600, color: '#111111', letterSpacing: '-0.01em', marginBottom: 4 }}>Will Flanagan</p>
+              <p style={{ fontSize: 12, color: '#A1A1AA', letterSpacing: '0.01em' }}>Founder, TrendJetter</p>
             </div>
           </div>
         </section>
