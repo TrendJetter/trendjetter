@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <!-- Home / Landing -->
   <url>
     <loc>https://www.trendjetter.io/</loc>
     <lastmod>2026-06-23</lastmod>
@@ -9,7 +8,6 @@
     <priority>1.0</priority>
   </url>
 
-  <!-- Blog index -->
   <url>
     <loc>https://www.trendjetter.io/#/blog</loc>
     <lastmod>2026-06-23</lastmod>
@@ -17,7 +15,7 @@
     <priority>0.9</priority>
   </url>
 
-  <!-- Blog posts (17 total) -->
+  <!-- Blog posts (25 total) -->
   <url>
     <loc>https://www.trendjetter.io/#/blog/how-many-hashtags-instagram-2026</loc>
     <lastmod>2026-06-23</lastmod>
@@ -120,8 +118,55 @@
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
+  <url>
+    <loc>https://www.trendjetter.io/#/blog/instagram-stories-growth-2026</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trendjetter.io/#/blog/instagram-reels-hashtags-by-niche</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trendjetter.io/#/blog/instagram-reach-dropped-fix</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trendjetter.io/#/blog/tiktok-seo-2026</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trendjetter.io/#/blog/hashtag-library-for-creators</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trendjetter.io/#/blog/instagram-reels-vs-tiktok-2026</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trendjetter.io/#/blog/find-trending-hashtags-before-they-peak</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://www.trendjetter.io/#/blog/hashtag-analytics-guide</loc>
+    <lastmod>2026-06-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
 
-  <!-- App pages -->
   <url>
     <loc>https://www.trendjetter.io/#/generator</loc>
     <lastmod>2026-06-23</lastmod>
