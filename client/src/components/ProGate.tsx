@@ -127,7 +127,7 @@ export default function ProGate({ children, isPaid, currentPlan = 'free', featur
               style={{ background: '#111111', color: '#FFFFFF', fontFamily: 'Inter, sans-serif', letterSpacing: '-0.01em' }}
             >
               <Zap size={15} />
-              Upgrade to Pro — $29/mo
+              Upgrade to Pro — $19/mo
             </button>
 
             <p className="text-center text-[11px] text-[#A1A1AA] mt-3">

@@ -453,7 +453,8 @@ function AnalyzerEmbed() {
     setError(null);
     setResult(null);
     try {
-      const data = await apiRequest('POST', '/api/analyze', { hashtags: [tag] }) as any;
+      const res = await apiRequest('POST', '/api/analyze', { hashtags: [tag] });
+      const data = await res.json();
       const r = data.results?.[0];
       if (r) setResult({ verdict: r.verdict, score: r.score ?? r.overallScore ?? 0, reason: r.reason ?? r.summary ?? '' });
       else setError('No results returned.');
@@ -483,7 +484,7 @@ function AnalyzerEmbed() {
   return (
     <section id="analyzer" style={{ padding: '80px 32px', background: '#FFFFFF', borderTop: '1px solid #E4E4E7' }}>
       <div style={{ maxWidth: 640, margin: '0 auto', textAlign: 'center' }}>
-        <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#0891B2', marginBottom: 12 }}>Free Tool</p>
+        <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#0891B2', marginBottom: 12 }}>Free Analyzer</p>
         <h2 style={{ fontFamily: 'Inter Tight, Inter, sans-serif', fontSize: 'clamp(26px,3vw,40px)', fontWeight: 800, letterSpacing: '-0.03em', color: '#111111', marginBottom: 12, lineHeight: 1.1 }}>
           Is your hashtag worth using?
         </h2>
@@ -587,7 +588,7 @@ function AnalyzerEmbed() {
             fontFamily: 'Inter, sans-serif',
           }}
         >
-          Get 30 optimized hashtags <ArrowRight size={14} strokeWidth={2.2} />
+          Get unique, optimized hashtags and reach the audience you want <ArrowRight size={14} strokeWidth={2.2} />
         </a>
         <p style={{ fontSize: 12, color: '#A1A1AA', marginTop: 6 }}>No credit card needed. Free to start.</p>
       </div>
@@ -701,9 +702,9 @@ const LANDING_PLANS = [
     cta: 'Get started free',
   },
   {
-    key: 'pro', name: 'Pro', badge: '⭐ MOST POPULAR', badgeBg: '#0891B2',
-    monthlyPrice: '$29', annualPrice: '$23', period: '/mo', annualPeriod: '/mo',
-    annualNote: 'billed $276/yr', savings: 'Save $72/yr', thenNote: '',
+    key: 'pro', name: 'Pro', badge: '⭐ FOUNDER PRICING', badgeBg: '#0891B2',
+    monthlyPrice: '$19', annualPrice: '$15', period: '/mo', annualPeriod: '/mo',
+    annualNote: 'billed $180/yr', savings: 'Save $48/yr', thenNote: '',
     desc: 'For serious creators who want real reach', dark: false, icon: Zap,
     features: ['1,000 searches/month', '30 hashtags with full verdicts', 'Use Now. Rising Fast. Skip.', 'All 6 platforms', 'Trend analytics + collections', 'Content assistant', 'Priority support'],
     cta: 'Start growing now',
