@@ -185,7 +185,7 @@ export default function AnalyzerPage() {
 
   return (
     <>
-      {showUpgrade && <UpgradeModal onClose={() => setShowUpgrade(false)} reason="Upgrade to analyze more hashtags at once." />}
+      {showUpgrade && <UpgradeModal isOpen={showUpgrade} onClose={() => setShowUpgrade(false)} currentPlan={plan} reason="Upgrade to analyze more hashtags at once." />}
       <div className="p-8 max-w-2xl mx-auto">
         {/* Header */}
         <div className="mb-8">

@@ -1,9 +1,12 @@
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { Sparkles, Copy, Check, Hash, FileText, Calendar, Globe, Loader2, RefreshCw, ChevronDown } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
 import { TiltCard } from '@/components/AppAnimations';
+import { useAuth } from '@clerk/clerk-react';
+import ProGate from '@/components/ProGate';
+import type { User } from '@shared/schema';
 
 interface ContentResult {
   caption: string;
@@ -97,11 +100,16 @@ function ResultSection({ result }: { result: ContentResult }) {
 
 export default function ContentPage() {
   const { toast } = useToast();
+  const { isSignedIn } = useAuth();
   const [topic, setTopic] = useState('');
   const [platform, setPlatform] = useState('instagram');
   const [industry, setIndustry] = useState('fitness');
   const [tone, setTone] = useState('Energetic');
   const [result, setResult] = useState<ContentResult | null>(null);
+
+  const { data: user } = useQuery<User>({ queryKey: ['/api/me'], enabled: !!isSignedIn });
+  const plan = user?.plan ?? (isSignedIn ? 'free' : 'anonymous');
+  const isPaid = plan === 'pro' || plan === 'agency';
 
   const mutation = useMutation({
     mutationFn: () => apiRequest('POST', '/api/content', { topic, platform, industry, tone: tone.toLowerCase() }).then(r => r.json()),
@@ -110,6 +118,19 @@ export default function ContentPage() {
   });
 
   return (
+    <ProGate
+      isPaid={isPaid}
+      currentPlan={plan}
+      featureName="Content Assistant"
+      featureDesc="AI-crafted captions, hashtags, SEO keywords, and posting schedules built for your niche."
+      bullets={[
+        'Full caption written in your chosen tone',
+        'Platform-optimized hashtag set (respects the 5-tag cap)',
+        'SEO keywords to boost discoverability',
+        'Best posting times and frequency by platform',
+        'Works across Instagram, TikTok, LinkedIn, YouTube Shorts, X, and Facebook',
+      ]}
+    >
     <div className="p-8 max-w-3xl mx-auto">
       <div className="flex items-start justify-between mb-8">
         <div>
@@ -179,5 +200,6 @@ export default function ContentPage() {
         <p className="text-center text-[13px] text-[#A1A1AA] mt-8">Your caption, hashtags, SEO keywords, and posting schedule will appear here.</p>
       )}
     </div>
+    </ProGate>
   );
 }
