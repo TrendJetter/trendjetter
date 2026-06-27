@@ -788,14 +788,30 @@ Return JSON: { "results": [ { "tag", "popularityScore", "competitionScore", "opp
         );
       }
 
-      let trends = await storage.getTrends(platform, industry, city);
-      // If no results for this combo, fall back to all trends for platform
-      if (!trends || trends.length === 0) {
-        trends = await storage.getTrends(platform, undefined, city);
-      }
-      // Last resort: return everything
-      if (!trends || trends.length === 0) {
-        trends = await storage.getTrends(undefined, undefined, city);
+      const isFiltered = industry && industry !== 'general';
+
+      let trends: any[] = [];
+
+      if (isFiltered) {
+        // Specific industry selected — top 20 for that combo
+        trends = await storage.getTrends(platform !== 'all' ? platform : undefined, industry, city, 20);
+        // Fall back to platform-only if no results
+        if (trends.length === 0) trends = await storage.getTrends(platform !== 'all' ? platform : undefined, undefined, city, 20);
+      } else {
+        // No industry filter — pull top 3-4 per industry for variety, total 20
+        const knownIndustries = Object.keys(INDUSTRY_KEYWORDS);
+        const perIndustry = 3;
+        const perIndustryRows = await Promise.all(
+          knownIndustries.map(ind =>
+            storage.getTrends(platform !== 'all' ? platform : undefined, ind, city, perIndustry)
+          )
+        );
+        const mixed = perIndustryRows.flat();
+        // Sort by trendScore desc, take top 20
+        mixed.sort((a, b) => (b.trendScore ?? 0) - (a.trendScore ?? 0));
+        trends = mixed.slice(0, 20);
+        // Last resort — just grab anything
+        if (trends.length === 0) trends = await storage.getTrends(undefined, undefined, city, 20);
       }
       res.json({
         trends: trends ?? [],

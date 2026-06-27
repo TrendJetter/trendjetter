@@ -511,15 +511,15 @@ export class SupabaseStorage implements IStorage {
 
   // ── Trends ─────────────────────────────────────────────────────────────────
 
-  async getTrends(platform?: string, industry?: string, city?: string): Promise<TrendRecord[]> {
+  async getTrends(platform?: string, industry?: string, city?: string, limit = 20): Promise<TrendRecord[]> {
     let query = supabase
       .from('trend_records')
       .select('*')
       .order('trend_score', { ascending: false })
-      .limit(50);
+      .limit(limit);
     if (platform) query = query.eq('platform', platform);
     if (industry) query = query.eq('industry', industry);
-    if (city) query = query.eq('location_city', city);
+    if (city)     query = query.eq('location_city', city);
     const { data, error } = await query;
     if (error || !data) return [];
     return data.map(toTrendRecord);
