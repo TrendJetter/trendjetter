@@ -1011,7 +1011,7 @@ Return JSON: { "results": [ { "tag", "popularityScore", "competitionScore", "opp
     }
   });
 
-  // ── Brand Voice routes ──────────────────────────────────────────────────────
+  // ── Your Voice routes ──────────────────────────────────────────────────────
 
   app.get('/api/brand-voice', async (req, res) => {
     try {
@@ -1042,7 +1042,7 @@ Return JSON: { "results": [ { "tag", "popularityScore", "competitionScore", "opp
       const Anthropic = (await import('@anthropic-ai/sdk')).default;
       const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-      const analysisPrompt = `You are a brand voice analyst. Analyze these social media posts and extract the creator's unique voice.
+      const analysisPrompt = `You are a voice analyst. Analyze these social media posts and extract the creator's unique voice.
 
 Posts:
 ${samplePosts}
@@ -1100,7 +1100,7 @@ Return ONLY the JSON object, no markdown.`;
     }
   });
 
-  // ── DELETE brand voice profile ────────────────────────────────────────
+  // ── DELETE your voice profile ────────────────────────────────────────
   app.post('/api/brand-voice/reset', async (req, res) => {
     try {
       const clerkId = req.headers['x-clerk-user-id'] as string;

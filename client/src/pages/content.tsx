@@ -199,7 +199,7 @@ export default function ContentPage() {
               <Mic2 size={14} className="text-white" />
             </div>
             <div>
-              <p className="text-[13px] font-semibold text-[#111111]">Set up your brand voice</p>
+              <p className="text-[13px] font-semibold text-[#111111]">Set up your voice</p>
               <p className="text-[12px] text-[#71717A]">Paste a few posts and we will make every caption sound like you.</p>
             </div>
           </div>

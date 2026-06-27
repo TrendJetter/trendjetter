@@ -79,7 +79,7 @@ export default function BrandVoiceModal({ onClose, onComplete }: BrandVoiceModal
             </div>
             <div>
               <p className="text-[13px] font-bold text-[#111111]" style={{ fontFamily: 'Inter Tight, Inter, sans-serif', letterSpacing: '-0.02em' }}>
-                Brand Voice Setup
+                Your Voice Setup
               </p>
               <p className="text-[11px] text-[#A1A1AA]">Step {Math.min(step, 3)} of 3</p>
             </div>

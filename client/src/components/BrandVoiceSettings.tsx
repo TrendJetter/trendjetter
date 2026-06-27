@@ -134,7 +134,7 @@ export default function BrandVoiceSettings() {
       <div className="bento-tile p-5 mb-4">
         <div className="flex items-center gap-2 mb-4">
           <Mic size={12} className="text-[#A1A1AA]" />
-          <p className="label-eyebrow">Brand Voice</p>
+          <p className="label-eyebrow">Your Voice</p>
         </div>
         <div className="h-16 bg-[#F4F4F5] rounded-lg animate-pulse" />
       </div>
@@ -149,7 +149,7 @@ export default function BrandVoiceSettings() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Mic size={12} className="text-[#A1A1AA]" />
-            <p className="label-eyebrow">Brand Voice</p>
+            <p className="label-eyebrow">Your Voice</p>
           </div>
           <button
             data-testid="button-edit-voice"
@@ -166,7 +166,7 @@ export default function BrandVoiceSettings() {
           <div className="flex items-start gap-2 mb-2">
             <Sparkles size={12} className="text-[#0891B2] mt-0.5 shrink-0" />
             <p className="text-[12px] font-semibold text-[#111111]" style={{ letterSpacing: '-0.01em' }}>
-              Your voice profile is active
+              Your voice is active
             </p>
           </div>
           {profile.voiceSummary && (
@@ -202,7 +202,7 @@ export default function BrandVoiceSettings() {
       <div className="bento-tile p-5 mb-4">
         <div className="flex items-center gap-2 mb-4">
           <Mic size={12} className="text-[#A1A1AA]" />
-          <p className="label-eyebrow">Brand Voice</p>
+          <p className="label-eyebrow">Your Voice</p>
         </div>
 
         <div
@@ -214,10 +214,10 @@ export default function BrandVoiceSettings() {
             <Mic size={16} className="text-[#A1A1AA]" />
           </div>
           <p className="text-[13px] font-semibold text-[#111111] mb-1" style={{ letterSpacing: '-0.01em' }}>
-            No voice profile yet
+            No voice set up yet
           </p>
           <p className="text-[12px] text-[#A1A1AA] mb-3">
-            Set up your brand voice and every caption will sound like you.
+            Set up your voice and every caption will sound like you.
           </p>
           <button
             type="button"
@@ -238,7 +238,7 @@ export default function BrandVoiceSettings() {
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-2">
           <Mic size={12} className="text-[#A1A1AA]" />
-          <p className="label-eyebrow">Brand Voice</p>
+          <p className="label-eyebrow">Your Voice</p>
         </div>
         <button
           data-testid="button-cancel-voice-edit"

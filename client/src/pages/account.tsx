@@ -355,7 +355,7 @@ export default function AccountPage() {
         <PlanCard planKey="agency" currentPlan={plan} annual={annual} />
       </div>
 
-      {/* ── Brand Voice (Pro only) ── */}
+      {/* ── Your Voice (Pro only) ── */}
       {isPaid && <BrandVoiceSettings />}
 
       {/* ── Settings ── */}
