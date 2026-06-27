@@ -27,10 +27,12 @@ const PLANS = {
   pro: {
     name: 'Pro',
     icon: Zap,
-    monthlyPrice: '$29',
-    annualPrice: '$23',
-    annualNote: 'billed $276/yr',
-    savings: 'Save $72/yr',
+    monthlyPrice: '$19',
+    monthlyOriginal: '$29',
+    annualPrice: '$15',
+    annualOriginal: '$23',
+    annualNote: 'billed $180/yr',
+    savings: 'Save $48/yr',
     features: ['1,000 searches/month', '30 hashtags per search', 'Full intelligence scores', 'All 6 platforms', 'Saved collections', 'Content assistant', 'Priority support'],
   },
   agency: {
@@ -72,6 +74,7 @@ function PlanCard({
   const PlanIcon = p.icon;
 
   const price = annual ? p.annualPrice : p.monthlyPrice;
+  const originalPrice = annual ? (p as any).annualOriginal : (p as any).monthlyOriginal;
 
   async function handlePlanChange() {
     if (current) return;
@@ -134,7 +137,12 @@ function PlanCard({
 
       {/* Price */}
       <div>
-        <div className="flex items-baseline gap-0.5">
+        <div className="flex items-baseline gap-1.5">
+          {originalPrice && (
+            <span className="text-[18px] font-medium text-[#D4D4D8] line-through" style={{ fontFamily: 'Inter Tight, Inter, sans-serif' }}>
+              {originalPrice}
+            </span>
+          )}
           <span
             className="text-[26px] font-bold text-[#111111] tabular"
             style={{ fontFamily: 'Inter Tight, Inter, sans-serif', letterSpacing: '-0.03em' }}
@@ -143,6 +151,9 @@ function PlanCard({
           </span>
           <span className="text-[13px] text-[#A1A1AA]">/mo</span>
         </div>
+        {originalPrice && (
+          <p className="text-[10px] font-semibold text-[#F59E0B] mt-0.5">Founder pricing</p>
+        )}
         {annual && p.annualNote && (
           <p className="text-[11px] text-[#A1A1AA] mt-0.5">{p.annualNote}</p>
         )}

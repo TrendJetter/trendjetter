@@ -580,6 +580,15 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     return null;
   }
 
+  // ── Demo accounts — always return agency plan regardless of DB ──
+  const DEMO_EMAILS = ['demo@trendjetter.io'];
+
+  async function getEffectivePlan(userId: number): Promise<string> {
+    const user = await storage.getUser(userId);
+    if (!user) return 'free';
+    return DEMO_EMAILS.includes((user.email ?? '').toLowerCase()) ? 'agency' : (user.plan ?? 'free');
+  }
+
   // ── Current user ──
   app.get('/api/me', async (req, res) => {
     const resolved = await resolveUser(req);
@@ -587,7 +596,8 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     const user = await storage.getUser(resolved.id);
     if (!user) return res.status(404).json({ error: 'User not found' });
     const usage = await storage.getUsageForUser(resolved.id);
-    res.json({ ...user, usage });
+    const isDemo = DEMO_EMAILS.includes((user.email ?? '').toLowerCase());
+    res.json({ ...user, plan: isDemo ? 'agency' : user.plan, usage });
   });
 
   // ── Hashtag Analyzer ──
@@ -668,17 +678,19 @@ Return JSON: { "results": [ { "tag", "popularityScore", "competitionScore", "opp
       const resolved = await resolveUser(req);
       if (!resolved) return res.status(401).json({ error: 'Unauthorized' });
       const usage = await storage.getUsageForUser(resolved.id);
-      if (usage.count >= usage.limit) {
+      const effectivePlan = await getEffectivePlan(resolved.id);
+      const effectiveLimit = effectivePlan === 'agency' ? 5000 : effectivePlan === 'pro' ? 1000 : 3;
+      if (usage.count >= effectiveLimit) {
         return res.status(429).json({
           error: 'limit_reached',
-          message: `You've used all ${usage.limit} searches this month. Upgrade to Pro for 1,000/month.`,
-          plan: usage.plan,
-          limit: usage.limit,
+          message: `You've used all ${effectiveLimit} searches this month. Upgrade to Pro for 1,000/month.`,
+          plan: effectivePlan,
+          limit: effectiveLimit,
           count: usage.count,
         });
       }
       const body = generateSchema.parse(req.body);
-      const hashtagCount = (usage.plan === 'free') ? 10 : 30;
+      const hashtagCount = (effectivePlan === 'free') ? 10 : 30;
       let gen: GenerateResult;
       if (process.env.ANTHROPIC_API_KEY) {
         try {
