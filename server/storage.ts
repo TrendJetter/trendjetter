@@ -558,8 +558,15 @@ export class SupabaseStorage implements IStorage {
       location_state: r.locationState ?? null,
       refreshed_at: new Date().toISOString(),
     }));
+    // Insert new rows first, THEN delete old ones — avoids empty gap
     const { error } = await supabase.from('trend_records').insert(rows);
     if (error) throw new Error(`upsertTrendBatch failed: ${error.message}`);
+    await supabase
+      .from('trend_records')
+      .delete()
+      .eq('platform', platform)
+      .eq('industry', industry ?? '')
+      .lt('refreshed_at', new Date().toISOString().slice(0, 19));
   }
 
   // ── Content Generations ────────────────────────────────────────────────────

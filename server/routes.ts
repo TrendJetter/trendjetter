@@ -788,7 +788,15 @@ Return JSON: { "results": [ { "tag", "popularityScore", "competitionScore", "opp
         );
       }
 
-      const trends = await storage.getTrends(platform, industry, city);
+      let trends = await storage.getTrends(platform, industry, city);
+      // If no results for this combo, fall back to all trends for platform
+      if (!trends || trends.length === 0) {
+        trends = await storage.getTrends(platform, undefined, city);
+      }
+      // Last resort: return everything
+      if (!trends || trends.length === 0) {
+        trends = await storage.getTrends(undefined, undefined, city);
+      }
       res.json({
         trends: trends ?? [],
         lastRefreshed: lastRefresh ?? null,
