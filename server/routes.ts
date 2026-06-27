@@ -766,6 +766,20 @@ Return JSON: { "results": [ { "tag", "popularityScore", "competitionScore", "opp
     res.json({ ok: true });
   });
 
+  // ── Debug (temp) ──
+  app.get('/api/debug-env', async (req, res) => {
+    const url = process.env.SUPABASE_URL;
+    const hasAnon = !!process.env.SUPABASE_ANON_KEY;
+    const hasService = !!process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const servicePrefix = process.env.SUPABASE_SERVICE_ROLE_KEY?.substring(0, 20) ?? 'MISSING';
+    try {
+      const { data, error } = await supabase.from('trend_records').select('id, tag').limit(3);
+      res.json({ url, hasAnon, hasService, servicePrefix, dbRows: data?.length ?? 0, dbError: error?.message ?? null });
+    } catch (e: any) {
+      res.json({ url, hasAnon, hasService, servicePrefix, dbError: e.message });
+    }
+  });
+
   // ── Trends ──
   app.get('/api/trends', async (req, res) => {
     try {
