@@ -7,14 +7,18 @@ let _client: SupabaseClient | null = null;
 function getClient(): SupabaseClient {
   if (_client) return _client;
   const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_ANON_KEY;
+  // Prefer service role key (bypasses RLS for server-side ops)
+  // Fall back to anon key for local dev without service key set
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY ?? process.env.SUPABASE_ANON_KEY;
   if (!url || !key) {
     throw new Error(
-      'SUPABASE_URL and SUPABASE_ANON_KEY must be set. ' +
+      'SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set. ' +
       'Add them to your Vercel environment variables.'
     );
   }
-  _client = createClient(url, key);
+  _client = createClient(url, key, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
   return _client;
 }
 
